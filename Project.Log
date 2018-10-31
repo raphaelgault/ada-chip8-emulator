@@ -1,0 +1,12 @@
+ADA Chip-8 Emulator
+===================
+
+31-10-2018
+----------
+
+- In order to simplify things, the first version of this project will include
+the ROM (chip-8 program to be executed) in the emulator binary. To do this we
+will need to generate a ``.ads`` file which exports a symbol containing the binary
+data of the ROM (for example an aggregate of chars...).
+
+- In order to draw on the screen we will need to use the Ada Drivers Library.
