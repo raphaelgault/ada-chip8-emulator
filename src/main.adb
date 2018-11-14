@@ -30,6 +30,8 @@
 ------------------------------------------------------------------------------
 
 with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
+-- with Ada.Text_IO; use Ada.Text_IO;
+with Stack; use Stack;
 --  The "last chance handler" is the user-defined routine that is called when
 --  an exception is propagated. We need it in the executable, therefore it
 --  must be somewhere in the closure of the context clauses.
@@ -46,6 +48,9 @@ procedure Main
 is
    BG : Bitmap_Color := (Alpha => 255, others => 0);
    Ball_Pos   : Point := (20, 280);
+   S : FifoStack;
+   B : Boolean;
+   E : Integer;
 begin
 
    --  Initialize LCD
@@ -94,4 +99,10 @@ begin
       Display.Update_Layer (1, Copy_Back => True);
 
    end loop;
+
+  B := Stack_Push(S, 10);
+--  Put_Line(B'Image);
+  E := Stack_Pop(S);
+--  Put_Line(E'Image);
+
 end Main;
