@@ -30,11 +30,14 @@
 ------------------------------------------------------------------------------
 
 with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
--- with Ada.Text_IO; use Ada.Text_IO;
-with Stack; use Stack;
 --  The "last chance handler" is the user-defined routine that is called when
 --  an exception is propagated. We need it in the executable, therefore it
 --  must be somewhere in the closure of the context clauses.
+
+
+-- with Ada.Text_IO; use Ada.Text_IO;
+with Stack; use Stack;
+with Graphics; use Graphics;
 
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
@@ -48,6 +51,12 @@ procedure Main
 is
    BG : Bitmap_Color := (Alpha => 255, others => 0);
    Ball_Pos   : Point := (20, 280);
+
+   Cur_Rect : Rect := (Ball_Pos, 10, 10);
+
+   Positions : Pos_Buffer := (others => Cur_Rect);
+   Screen : Pixel_Buffer := (others => False);
+
    S : FifoStack;
    B : Boolean;
    E : Integer;
@@ -73,6 +82,11 @@ begin
    LCD_Std_Out.Clear_Screen;
    Display.Update_Layer (1, Copy_Back => True);
 
+   --  Init Graphics
+   -- Positions := Init_Screen;
+   Screen(1) := True;
+   Screen(3) := True;
+
    loop
       if User_Button.Has_Been_Pressed then
          BG := HAL.Bitmap.Dark_Orange;
@@ -83,7 +97,7 @@ begin
 
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Blue);
       Display.Hidden_Buffer (1).Fill_Circle (Ball_Pos, 10);
-
+      -- Draw_Screen(Screen, Positions);
 
       declare
          State : constant TP_State := Touch_Panel.Get_All_Touch_Points;

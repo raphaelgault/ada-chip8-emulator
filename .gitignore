@@ -4,3 +4,6 @@ obj/
 
 # Ada Library Information
 *.ali
+
+# Editor temporary files
+*~
