@@ -1,24 +1,23 @@
 package body Graphics is
-   function Init_Screen return Pos_Buffer is
-      Positions : Pos_Buffer;
-      Cur_pos : Point;
-      Cur_Rect : Rect;
+   -- Find position in the screen according to index
+   function Compute_Position(Index: Integer) return Point is
+      Position : Point := (0, 0);
    begin
-      for I in Positions'Range loop
-         Cur_Pos := (I * Pixel_Size, 0);
-         Cur_Rect := (Cur_Pos, Pixel_Size, Pixel_Size);
-         Positions(I) := Cur_Rect;
-      end loop;
-      return Positions;
+      Position := ((Index / 64) * Pixel_Size, abs(63  - (Index mod 64)) * Pixel_Size);
+      return Position;
    end;
 
-   procedure Draw_Screen(Screen : in out Pixel_Buffer;
-                         Positions : in Pos_Buffer)
+   -- Write the buffer
+   procedure Draw_Screen(Screen : in out Pixel_Buffer)
    is
+      Cur_Pos : Point;
+      Cur_Rect : Rect;
    begin
       for I in Screen'Range loop
          if Screen(I) = True then
-            Display.Hidden_Buffer(1).Draw_Rect(Positions(I));
+            Cur_Pos := Compute_Position(I);
+            Cur_Rect := (Cur_Pos, Pixel_Size, Pixel_Size);
+            Display.Hidden_Buffer(1).Fill_Rect(Cur_Rect);
          end if;
       end loop;
    end;

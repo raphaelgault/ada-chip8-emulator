@@ -52,9 +52,6 @@ is
    BG : Bitmap_Color := (Alpha => 255, others => 0);
    Ball_Pos   : Point := (20, 280);
 
-   Cur_Rect : Rect := (Ball_Pos, 10, 10);
-
-   Positions : Pos_Buffer := (others => Cur_Rect);
    Screen : Pixel_Buffer := (others => False);
 
    S : FifoStack;
@@ -82,22 +79,25 @@ begin
    LCD_Std_Out.Clear_Screen;
    Display.Update_Layer (1, Copy_Back => True);
 
-   --  Init Graphics
-   -- Positions := Init_Screen;
-   Screen(1) := True;
-   Screen(3) := True;
+   --  Screen bounds
+   Screen(0) := True;
+   Screen(2) := True;
+   Screen(63) := True;
+   Screen(1984) := True;
+   Screen(2047) := True;
 
    loop
       if User_Button.Has_Been_Pressed then
-         BG := HAL.Bitmap.Dark_Orange;
+         BG := HAL.Bitmap.Blanched_Almond;
       end if;
 
       Display.Hidden_Buffer (1).Set_Source (BG);
       Display.Hidden_Buffer (1).Fill;
 
-      Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Blue);
+      Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
       Display.Hidden_Buffer (1).Fill_Circle (Ball_Pos, 10);
-      -- Draw_Screen(Screen, Positions);
+
+      Draw_Screen(Screen);
 
       declare
          State : constant TP_State := Touch_Panel.Get_All_Touch_Points;
