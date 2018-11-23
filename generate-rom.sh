@@ -2,18 +2,24 @@
 
 echo "with Types; use Types;" > src/rom.ads
 echo "package Rom is" >> src/rom.ads
-echo "  code: Opcode (" >> src/rom.ads
 
+nb=0
+instr=""
 for i in $@; do
   l=${#i}
   j=0
-  printf '    ' >> src/rom.ads
+  instr="$instr    " # >> src/rom.ads
   while [ $j -lt $l ]; do
-    printf '16#'${i:$j:4}', ' >> src/rom.ads
+    instr="${instr}16#${i:$j:4}#, " # >> src/rom.ads
     j=$((j + 4))
+    nb=$((nb + 1))
   done;
-  echo >> src/rom.ads
+  instr="$instr\n"
 done;
 
-echo "               )" >> src/rom.ads
-echo "end Rom" >> src/rom.ads
+echo "type Code is array (0 .. $((nb - 1))) of Opcode;" >> src/rom.ads
+echo "  instructions: Code := (" >> src/rom.ads
+printf "${instr::-4}" >> src/rom.ads
+
+echo " );" >> src/rom.ads
+echo "end Rom;" >> src/rom.ads
