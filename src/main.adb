@@ -41,6 +41,8 @@ with Graphics; use Graphics;
 
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
+with HAL.Framebuffer;            use HAL.Framebuffer
+                                   ;
 pragma Warnings (Off, "referenced");
 with HAL.Touch_Panel;       use HAL.Touch_Panel;
 with STM32.User_Button;     use STM32;
@@ -58,7 +60,6 @@ is
    B : Boolean;
    E : Integer;
 begin
-
    --  Initialize LCD
    Display.Initialize;
    Display.Initialize_Layer (1, ARGB_8888);
@@ -97,6 +98,7 @@ begin
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
       Display.Hidden_Buffer (1).Fill_Circle (Ball_Pos, 10);
 
+      Draw_Borders;
       Draw_Screen(Screen);
 
       declare
