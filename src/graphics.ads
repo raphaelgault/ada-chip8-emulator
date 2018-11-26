@@ -8,10 +8,11 @@ package Graphics is
    Screen_Width : constant Integer := 64 * Pixel_Size;
 
    type Pixel_Buffer is array (0 .. 2047) of Boolean;
-   -- type Pos_Buffer is array (0 .. 2047) of Integer range 0 .. 64;
+   pragma Pack(Pixel_Buffer);
 
    function Compute_Position(Index: Integer) return Point;
 
-   procedure Draw_Screen(Screen : in out Pixel_Buffer);
+   procedure Render_Screen(Screen: in out Pixel_Buffer);
    procedure Draw_Borders;
+
 end Graphics;

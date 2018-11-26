@@ -9,7 +9,7 @@ package body Graphics is
    end;
 
    -- Write the buffer
-   procedure Draw_Screen(Screen : in out Pixel_Buffer)
+   procedure Render_Screen(Screen: in out Pixel_Buffer)
    is
       Cur_Pos : Point := (0, 0);
       Cur_Rect : Rect := (Cur_Pos, Pixel_Size, Pixel_Size);
@@ -23,7 +23,8 @@ package body Graphics is
       end loop;
    end;
 
-   procedure Draw_Borders is
+   procedure Draw_Borders
+   is
       Pt : Point := (0, 0);
       R : Rect;
    begin
@@ -43,7 +44,6 @@ package body Graphics is
          Pt := (160, I * 40);
          Display.Hidden_Buffer(1).Draw_Horizontal_Line(Pt, 80);
       end loop;
-
    end;
 
 end;
