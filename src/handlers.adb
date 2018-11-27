@@ -1,4 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Class_Eight; use Class_Eight;
+with Class_E; use Class_E;
 
 package body Handlers is
 
@@ -62,8 +64,23 @@ package body Handlers is
 
   procedure handler_8 (i : in Opcode; vm : in out Registers.Registers)
   is
+    E : Integer;
+    X : Integer;
+    Y : Integer;
   begin
     Put_Line ("Class 8");
+    E := Integer (i and 16#000F#);
+    X := Integer (rshift(i and 16#0F00#, 8));
+    Y := Integer (rshift(i and 16#00F0#, 4));
+
+    if E < 8 then
+      Class_Eight.Instr_Table(E).all(X, Y, vm);
+    elsif E = 14 then
+      Class_Eight.Instr_Table(8).all(X, Y, vm);
+    else
+      Put_Line ("Unknown Instruction with opcode " & Integer(I)'Image);
+    end if;
+
   end handler_8;
 
   procedure handler_9 (i : in Opcode; vm : in out Registers.Registers)
@@ -98,8 +115,22 @@ package body Handlers is
 
   procedure handler_E (i : in Opcode; vm : in out Registers.Registers)
   is
+    package Byte_IO is new Ada.Text_Io.Modular_IO (Types.Opcode);
+    X : Integer;
+    E : Integer;
   begin
-    Put_Line ("Class E");
+    E := Integer(i and 16#00FF#);
+    X := Integer(rshift(i and 16#0F00#, 4));
+
+    Put_Line ("E : " & E'Image);
+    if E = 16#9E# then
+      Class_E.SKP(X, vm);
+    elsif E = 16#A1# then
+      Class_E.SKNP(X, vm);
+    else
+      Put_Line ("Unknown Instruction with opcode " & E'Image & " - " & Integer(I)'Image);
+    end if;
+
   end handler_E;
 
   procedure handler_F (i : in Opcode; vm : in out Registers.Registers)
