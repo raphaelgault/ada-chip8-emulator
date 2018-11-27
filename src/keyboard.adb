@@ -1,24 +1,31 @@
 package body Keyboard is
-   procedure Write_Key(Keyboard : in out Keyboard_buffer;
-                       Code : in Integer; Pos : in Integer)
+   procedure Write_Key(Keyboard: in out Keyboard_buffer;
+                       Code: in Integer; Pos: in Integer)
    is
+      Line : Unsigned_64;
+      Tmp : Unsigned_64;
    begin
       for I in 0 .. 4 loop
+         Line := Shift_Right(Unsigned_64(Code), (4 - I) * 4) and 2#1111#;
          for J in 0 .. 3 loop
-            Keyboard(Pos + (J * 20 ) + I) := True;
+            Tmp := Shift_Right(Line, J) and 1;
+            if Tmp = 1 then
+               Keyboard(Pos + (J * 20 ) + I) := True;
+            end if;
          end loop;
-         -- Tmp := (Shift_Right(Tmp, 4));
       end loop;
    end;
 
    procedure Reset_Keyboard(Keyboard: in out Keyboard_buffer)
    is
       type Keys_Arr is array (0 .. 15) of Integer;
-      -- Numbers from 0 to F
-      Keys : constant Keys_Arr := (16#F999F#, 16#26227#, 16#F1F8F#, 16#F1F1F#,
-                                   16#99F11#, 16#F8F1F#, 16#F8F9F#, 16#F1244#,
-                                   16#F9F9F#, 16#F9F1F#, 16#F9F99#, 16#E9E9E#,
-                                   16#F888F#, 16#E999E#, 16#F8F8F#, 16#F8F88#);
+      -- Code nbs, in order : 7, F, 6, E, 5, D, 4, C, 3, B, 2, A, 1, 9, 0, 8
+      -- The number representation is 4x5 pixels where each 4 bits is
+      -- equivalent to one line
+      Keys : constant Keys_Arr := (16#F1244#, 16#F8F88#, 16#F8F9F#, 16#F8F8F#,
+                                   16#F8F1F#, 16#E999E#, 16#99F11#, 16#F888F#,
+                                   16#F1F1F#, 16#E9E9E#, 16#F1F8F#, 16#F9F99#,
+                                   16#26227#, 16#F9F1F#, 16#F999F#, 16#F9F9F#);
    begin
       for I in Keys'Range loop
          Write_Key(Keyboard, Keys(I),

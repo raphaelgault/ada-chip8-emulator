@@ -38,6 +38,7 @@ with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
 -- with Ada.Text_IO; use Ada.Text_IO;
 with Stack; use Stack;
 with Graphics; use Graphics;
+with Keyboard; use Keyboard;
 
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
@@ -55,6 +56,8 @@ is
    Ball_Pos   : Point := (20, 280);
 
    Screen : Pixel_Buffer := (others => False);
+   Keyboard : Keyboard_Buffer := (others => False);
+   Keyboard_Changed : Boolean := False;
 
    S : FifoStack;
    B : Boolean;
@@ -80,12 +83,8 @@ begin
    LCD_Std_Out.Clear_Screen;
    Display.Update_Layer (1, Copy_Back => True);
 
-   --  Screen bounds
-   Screen(0) := True;
-   Screen(2) := True;
-   Screen(63) := True;
-   Screen(1984) := True;
-   Screen(2047) := True;
+   -- Init keyboard
+   Reset_Keyboard(Keyboard);
 
    loop
       if User_Button.Has_Been_Pressed then
@@ -99,7 +98,8 @@ begin
       Display.Hidden_Buffer (1).Fill_Circle (Ball_Pos, 10);
 
       Draw_Borders;
-      Draw_Screen(Screen);
+      Render_Keyboard(Keyboard);
+      Render_Screen(Screen);
 
       declare
          State : constant TP_State := Touch_Panel.Get_All_Touch_Points;
@@ -107,7 +107,13 @@ begin
          case State'Length is
             when 1 =>
                Ball_Pos := (State (State'First).X, State (State'First).Y);
-            when others => null;
+               BG := HAL.Bitmap.Red;
+               Keyboard_Changed := True;
+            when others =>
+               if Keyboard_Changed then
+                  BG := HAL.Bitmap.Black;
+                  Keyboard_Changed := False;
+               end if;
          end case;
       end;
 

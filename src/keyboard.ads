@@ -1,6 +1,10 @@
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
 
+with Ada.Text_IO;           use Ada.Text_IO;
+with Interfaces;            use Interfaces;
+
+
 package Keyboard is
    Keyboard_Start : constant Integer := 160;
 
@@ -11,6 +15,8 @@ package Keyboard is
    type Keyboard_Buffer is array (0 .. 1599) of Boolean;
    pragma Pack(Keyboard_buffer);
    Line : constant Integer := 20;
+
+   type U64 is mod 2**64;
 
    procedure Reset_Keyboard(Keyboard: in out Keyboard_Buffer);
    procedure Render_Keyboard(Keyboard: in Keyboard_Buffer);
