@@ -1,18 +1,19 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Class_Eight; use Class_Eight;
 with Class_E; use Class_E;
+with Class_F; use Class_F;
 
 package body Handlers is
 
-   function rshift (val : opcode; num : Integer) return Opcode
-   is
-     v : Opcode := val;
-   begin
-     for I in 1 .. num loop
-       v := v / 2;
-     end loop;
-     return v;
-   end;
+  function rshift (val : opcode; num : Integer) return Opcode
+  is
+    v : Opcode := val;
+  begin
+    for I in 1 .. num loop
+      v := v / 2;
+    end loop;
+    return v;
+  end;
 
   procedure handler_0 (i : in Opcode; vm : in out Registers.Registers)
   is
@@ -135,7 +136,16 @@ package body Handlers is
 
   procedure handler_F (i : in Opcode; vm : in out Registers.Registers)
   is
+    X : Integer;
+    E : Integer;
   begin
-    Put_Line ("Class F");
+    E := Integer(i and 16#00FF#);
+    X := Integer(rshift(i and 16#0F00#, 4));
+
+    if E = 16#1E# then
+      Class_F.ADD(X, vm);
+    else
+      Class_F.LD(i, X, vm);
+    end if;
   end handler_F;
 end Handlers;
