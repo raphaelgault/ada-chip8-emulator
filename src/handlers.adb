@@ -22,9 +22,11 @@ package body Handlers is
   end handler_0;
 
   procedure handler_1 (i : in Opcode; vm : in out Registers.Registers)
-  is
+  is -- JP addr
+    N : Integer;
   begin
-    Put_Line ("Class 1");
+    N := Integer(i and 16#0FFF#);
+    vm.PC := N; -- Jump, need decrementing ?
   end handler_1;
 
   procedure handler_2 (i : in Opcode; vm : in out Registers.Registers)
@@ -85,21 +87,31 @@ package body Handlers is
   end handler_8;
 
   procedure handler_9 (i : in Opcode; vm : in out Registers.Registers)
-  is
+  is -- 9xy0 - SNE Vx, Vy
+    X : Integer;
+    Y : Integer;
   begin
-    Put_Line ("Class 9");
+    X := Integer (rshift(i and 16#0F00#, 8));
+    Y := Integer (rshift(i and 16#00F0#, 4));
+    if X /= Y then
+      vm.PC := vm.PC + 1; -- we skip next instruction;
+    end if;
   end handler_9;
 
   procedure handler_A (i : in Opcode; vm : in out Registers.Registers)
   is
+    N : Integer;
   begin
-    Put_Line ("Class A");
+    N := Integer(i and 16#0FFF#);
+    vm.I := N;
   end handler_A;
 
   procedure handler_B (i : in Opcode; vm : in out Registers.Registers)
-  is
+  is -- JP V0, addr
+    N : Integer;
   begin
-    Put_Line ("Class B");
+    N := Integer(i and 16#0FFF#);
+    vm.PC := N + Integer(vm.GeneralRegisters(0)); -- Jump, need decrementing ?
   end handler_B;
 
   procedure handler_C (i : in Opcode; vm : in out Registers.Registers)
