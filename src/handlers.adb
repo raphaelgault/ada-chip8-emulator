@@ -26,7 +26,7 @@ package body Handlers is
     N : Integer;
   begin
     N := Integer(i and 16#0FFF#);
-    vm.PC := N; -- Jump, need decrementing ?
+    vm.PC := N;
   end handler_1;
 
   procedure handler_2 (i : in Opcode; vm : in out Registers.Registers)
@@ -38,37 +38,57 @@ package body Handlers is
   procedure handler_3 (i : in Opcode; vm : in out Registers.Registers)
   is
     X : Integer;
-    K : Integer;
+    K : Opcode;
   begin
     X := Integer(rshift(i and 16#0F00#, 8));
-    K := Integer(rshift(i and 16#00FF#, 8));
-    if Integer(vm.GeneralRegisters(X)) = K then
+    K := rshift(i and 16#00FF#, 8);
+    if vm.GeneralRegisters(X) = Byte(K) then
       vm.PC := vm.PC + 1;
     end if;
   end handler_3;
 
   procedure handler_4 (i : in Opcode; vm : in out Registers.Registers)
   is
+    X : Integer;
+    K : Byte;
   begin
-    Put_Line ("Class 4");
+    X := Integer(rshift(i and 16#0F00#, 8));
+    K := Byte(i and 16#00FF#);
+    if vm.GeneralRegisters(X) /= K then
+      vm.PC := vm.PC + 1;
+    end if;
   end handler_4;
 
   procedure handler_5 (i : in Opcode; vm : in out Registers.Registers)
-  is
+  is -- SE Vx, Vy
+    X : Integer;
+    Y : Integer;
   begin
-    Put_Line ("Class 5");
+    X := Integer(rshift(i and 16#0F00#, 8));
+    Y := Integer(rshift(i and 16#00F0#, 4));
+    if vm.GeneralRegisters(X) = vm.GeneralRegisters(Y) then
+      vm.PC := vm.PC + 1;
+    end if;
   end handler_5;
 
   procedure handler_6 (i : in Opcode; vm : in out Registers.Registers)
-  is
+  is -- LD Vx, kk
+    X : Integer;
+    K : Byte;
   begin
-    Put_Line ("Class 6");
+    X := Integer(rshift(i and 16#0F00#, 8));
+    K := Byte(i and 16#FF#);
+    vm.GeneralRegisters(X) := K;
   end handler_6;
 
   procedure handler_7 (i : in Opcode; vm : in out Registers.Registers)
-  is
+  is -- ADD Vx, byte
+    X : Integer;
+    K : Opcode;
   begin
-    Put_Line ("Class 7");
+    X := Integer(rshift(i and 16#0F00#, 8));
+    K := i and 16#00FF#;
+    vm.GeneralRegisters(X) := vm.GeneralRegisters(X) + Byte(K);
   end handler_7;
 
   procedure handler_8 (i : in Opcode; vm : in out Registers.Registers)
@@ -117,7 +137,7 @@ package body Handlers is
     N : Integer;
   begin
     N := Integer(i and 16#0FFF#);
-    vm.PC := N + Integer(vm.GeneralRegisters(0)); -- Jump, need decrementing ?
+    vm.PC := N + Integer(vm.GeneralRegisters(0));
   end handler_B;
 
   procedure handler_C (i : in Opcode; vm : in out Registers.Registers)
