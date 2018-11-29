@@ -37,8 +37,14 @@ package body Handlers is
 
   procedure handler_3 (i : in Opcode; vm : in out Registers.Registers)
   is
+    X : Integer;
+    K : Integer;
   begin
-    Put_Line ("Class 3");
+    X := Integer(rshift(i and 16#0F00#, 8));
+    K := Integer(rshift(i and 16#00FF#, 8));
+    if Integer(vm.GeneralRegisters(X)) = K then
+      vm.PC := vm.PC + 1;
+    end if;
   end handler_3;
 
   procedure handler_4 (i : in Opcode; vm : in out Registers.Registers)

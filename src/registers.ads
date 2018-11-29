@@ -1,3 +1,4 @@
+with Stack; use Stack;
 with Types; use Types;
 
 package Registers is
@@ -9,5 +10,7 @@ package Registers is
     ST : Byte; -- Sound Timer
     PC : Integer_16;
     SP : Byte;
+    mem : RAM := (others => 0);
+    stack : LifoStack := Stack_Init;
   end record;
 end Registers;
