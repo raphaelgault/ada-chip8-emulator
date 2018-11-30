@@ -2,6 +2,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Class_Eight; use Class_Eight;
 with Class_E; use Class_E;
 with Class_F; use Class_F;
+with Stack; use Stack;
+with Ada.Numerics.Discrete_Random;
 
 package body Handlers is
 
@@ -17,8 +19,18 @@ package body Handlers is
 
   procedure handler_0 (i : in Opcode; vm : in out Registers.Registers)
   is
+    A : Addr;
+    K : Byte;
   begin
-    Put_Line ("Class 0");
+    K := Byte(i and 16#FF#);
+    if K = 16#E0# then
+      Put_Line ("CLS");
+    elsif K = 16#EE# then
+      vm.PC := Stack_Pop(vm.Stack);
+    else
+      A := Addr(i and 16#0FFF#);
+      Put_Line ("SYS");
+    end if;
   end handler_0;
 
   procedure handler_1 (i : in Opcode; vm : in out Registers.Registers)
@@ -31,8 +43,15 @@ package body Handlers is
 
   procedure handler_2 (i : in Opcode; vm : in out Registers.Registers)
   is
+    N : Integer;
+    B : Boolean;
   begin
-    Put_Line ("Class 2");
+    N := Integer(i and 16#0FFF#);
+    B := Stack.Stack_Push(vm.Stack, vm.PC);
+    if not B then
+      Put_Line ("Error while pushing value of PC on the stack");
+    end if;
+    vm.PC := N;
   end handler_2;
 
   procedure handler_3 (i : in Opcode; vm : in out Registers.Registers)
@@ -97,7 +116,6 @@ package body Handlers is
     X : Integer;
     Y : Integer;
   begin
-    Put_Line ("Class 8");
     E := Integer (i and 16#000F#);
     X := Integer (rshift(i and 16#0F00#, 8));
     Y := Integer (rshift(i and 16#00F0#, 4));
@@ -142,8 +160,18 @@ package body Handlers is
 
   procedure handler_C (i : in Opcode; vm : in out Registers.Registers)
   is
+    package Random_Byte is new Ada.Numerics.Discrete_Random (Byte);
+    use Random_Byte;
+    G : Generator;
+    X : Integer;
+    B : Byte;
+    K : Byte;
   begin
-    Put_Line ("Class C");
+    X := Integer(rshift(i and 16#0F00#, 8));
+    Reset(G);
+    K := Byte(i and 16#00FF#);
+    B := Random(G);
+    vm.GeneralRegisters(X) := K and B;
   end handler_C;
 
   procedure handler_D (i : in Opcode; vm : in out Registers.Registers)
@@ -161,7 +189,6 @@ package body Handlers is
     E := Integer(i and 16#00FF#);
     X := Integer(rshift(i and 16#0F00#, 4));
 
-    Put_Line ("E : " & E'Image);
     if E = 16#9E# then
       Class_E.SKP(X, vm);
     elsif E = 16#A1# then
