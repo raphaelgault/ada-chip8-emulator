@@ -110,6 +110,7 @@ begin
             when 0 =>
                if Keyboard_Changed then
                   Reset_Pressed_Keys(Pressed_Keys);
+                  Reset_Keyboard(Keyboard);
                   BG := HAL.Bitmap.Black;
                   Keyboard_Changed := False;
                end if;
@@ -118,9 +119,11 @@ begin
                   Current_X := State (Id).X;
                   Current_Y := State (Id).Y;
                   if Current_X >= Keyboard_Start then
-                     Get_Pressed_Key(Pressed_Keys, Current_X, Current_Y);
+                     Get_Pressed_Key(Keyboard, Pressed_Keys,
+                                     Current_X, Current_Y);
                   end if;
                end loop;
+               Keyboard_Changed := True;
          end case;
       end;
       --  Update screen

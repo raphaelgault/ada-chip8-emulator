@@ -6,10 +6,12 @@ with Interfaces;            use Interfaces;
 
 package Keyboard is
    Keyboard_Start : constant Integer := 160;
+   Key_Size : constant Integer := 10;
 
    subtype Position is Integer range 0 ..320;
 
    -- 0 to F, handle multi press
+   subtype Key is Integer range -1 .. 15;
    type Keys is array (0 .. 15) of Boolean;
    pragma Pack(Keys);
 
@@ -20,7 +22,8 @@ package Keyboard is
 
    procedure Reset_Keyboard(Keyboard: in out Keyboard_Buffer);
    procedure Render_Keyboard(Keyboard: in Keyboard_Buffer);
-   procedure Reset_Pressed_Keys(Pressed : in out Keys);
-   procedure Get_Pressed_Key(Pressed : in out Keys;
+   procedure Reset_Pressed_Keys(Pressed: in out Keys);
+   procedure Get_Pressed_Key(Keyboard: in out Keyboard_Buffer;
+                             Pressed: in out Keys;
                              X: in Position; Y: in Position);
 end Keyboard;

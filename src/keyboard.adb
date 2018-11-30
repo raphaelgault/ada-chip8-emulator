@@ -27,6 +27,7 @@ package body Keyboard is
                                    16#F1F1F#, 16#E9E9E#, 16#F1F8F#, 16#F9F99#,
                                    16#26227#, 16#F9F1F#, 16#F999F#, 16#F9F9F#);
    begin
+      Keyboard := (others => False);
       for I in Keys'Range loop
          Write_Key(Keyboard, Keys(I),
                    20 * ((I / 2) * 10 + 3) + ((I mod 2) * 10) + 3);
@@ -47,21 +48,46 @@ package body Keyboard is
       end loop;
    end;
 
-   procedure Reset_Pressed_Keys(Pressed : in out Keys)
+   procedure Reset_Pressed_Keys(Pressed: in out Keys)
    is
    begin
       Pressed := (others => False);
    end;
 
-   procedure Get_Pressed_Key(Pressed : in out Keys;
-                             X : in Position; Y : in Position)
+   procedure Update_Keyboard_Buffer(Keyboard: in out Keyboard_Buffer;
+                                    K : in Key)
+   is
+      Start_X : Natural := 0;
+      Start_Y : Integer := (7 - K) * 10;
+      Cur_Index : Integer := 0;
+   begin
+      if K >= 8 then
+         Start_X := Start_X + 10;
+         Start_Y := (7 - (K mod 8)) * 10;
+      end if;
+      for I in 0 .. Key_Size - 1 loop
+         for J in 0 .. Key_Size - 1 loop
+            Cur_Index := Start_X + I + ((Start_Y + J) * 20);
+            Keyboard(Cur_Index) := not Keyboard(Cur_Index);
+         end loop;
+      end loop;
+   end;
+
+   procedure Get_Pressed_Key(Keyboard: in out Keyboard_Buffer;
+                             Pressed: in out Keys;
+                             X: in Position; Y: in Position)
    is
       Bottom_Start : constant Integer := Keyboard_Start + 40;
+      Current_Key : Key := -1;
    begin
       if X >= Bottom_Start then
-         Pressed(15 - (Y / 40)) := True;
+         Current_Key := 15 - (Y / 40);
       elsif X >= Keyboard_Start then
-         Pressed(7 - (Y / 40)) := True;
+         Current_Key := 7 - (Y / 40);
+      end if;
+      if Pressed(Current_Key) = False then
+         Pressed(Current_Key) := True;
+         Update_Keyboard_Buffer(Keyboard, Current_key);
       end if;
    end;
 end;
