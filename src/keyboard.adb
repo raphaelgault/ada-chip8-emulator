@@ -47,9 +47,21 @@ package body Keyboard is
       end loop;
    end;
 
-   function Get_Key(X : in Position; Y : in Position) return Key
+   procedure Reset_Pressed_Keys(Pressed : in out Keys)
    is
    begin
-      return 0;
+      Pressed := (others => False);
+   end;
+
+   procedure Get_Pressed_Key(Pressed : in out Keys;
+                             X : in Position; Y : in Position)
+   is
+      Bottom_Start : constant Integer := Keyboard_Start + 40;
+   begin
+      if X >= Bottom_Start then
+         Pressed(15 - (Y / 40)) := True;
+      elsif X >= Keyboard_Start then
+         Pressed(7 - (Y / 40)) := True;
+      end if;
    end;
 end;
