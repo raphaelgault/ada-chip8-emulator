@@ -8,6 +8,12 @@ package body Graphics is
       return Position;
    end;
 
+   procedure Clear_Screen(Screen : in out Pixel_Buffer)
+   is
+   begin
+      Screen := (others => False);
+   end;
+
    -- Write the buffer
    procedure Render_Screen(Screen: in out Pixel_Buffer)
    is

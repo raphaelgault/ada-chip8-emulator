@@ -9,6 +9,7 @@ package Keyboard is
 
    subtype Position is Integer range 0 ..320;
 
+   -- 0 to F, handle multi press
    type Keys is array (0 .. 15) of Boolean;
    pragma Pack(Keys);
 

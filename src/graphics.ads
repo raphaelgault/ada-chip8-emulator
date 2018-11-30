@@ -10,8 +10,7 @@ package Graphics is
    type Pixel_Buffer is array (0 .. 2047) of Boolean;
    pragma Pack(Pixel_Buffer);
 
-   function Compute_Position(Index: Integer) return Point;
-
+   procedure Clear_Screen(Screen : in out Pixel_Buffer);
    procedure Render_Screen(Screen: in out Pixel_Buffer);
    procedure Draw_Borders;
 
