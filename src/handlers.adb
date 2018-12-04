@@ -5,6 +5,8 @@ with Class_F; use Class_F;
 with Stack; use Stack;
 with Ada.Numerics.Discrete_Random;
 
+with Graphics; use Graphics;
+
 package body Handlers is
 
   function rshift (val : opcode; num : Integer) return Opcode
@@ -174,10 +176,31 @@ package body Handlers is
     vm.GeneralRegisters(X) := K and B;
   end handler_C;
 
+  -- TODO: Check function
   procedure handler_D (i : in Opcode; vm : in out Registers.Registers)
   is
+     X : Integer;
+     Y : Integer;
+     Nibble : Integer;
+     Line_Value : Integer_16;
+     Pixel : Integer_16;
+     Screen : Pixel_Buffer := (others => false);
+     Screen_Pos : Integer;
   begin
-    Put_Line ("Class D");
+     X := Integer(Rshirt(I and 16#0F00#, 8));
+     X := Integer(Rshirt(I and 16#0F00#, 4));
+     Nibble := Integer(I and 16#000F#);
+
+     for Line in 0 .. Nibble loop
+        Line_Value := Vm.Mem(Vm.I + Line);
+        for Xpos in 0 .. 8 loop
+           Pixel := Line_Value and Rshift(2#10000000#, Xpos);
+           if Pixel /= 0 then
+              Screen_Pos := X + Xpos + ((Y + Line) * 64);
+              Screen(Screen_Pos) := Screen(Screen_Pos) xor True;
+           end if;
+        end loop;
+     end loop;
   end handler_D;
 
   procedure handler_E (i : in Opcode; vm : in out Registers.Registers)
