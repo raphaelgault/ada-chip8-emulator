@@ -12,4 +12,5 @@ package Stack is
   function Stack_Init return LifoStack;
   function Stack_Push (s : in out LifoStack; elt : Types.Integer_16) return Boolean;
   function Stack_Pop (s : in out LifoStack) return Types.Integer_16;
+  function Stack_Top (s : in LifoStack) return Types.Integer_16;
 end Stack;

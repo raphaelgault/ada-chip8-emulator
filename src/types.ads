@@ -7,4 +7,5 @@ package Types is
   pragma Pack(GeneralRegs);
   type RAM is array (Addr) of Integer_16;
   pragma Pack(RAM);
+  --mem: RAM := (others => 0);
 end Types;
