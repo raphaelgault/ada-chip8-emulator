@@ -192,7 +192,7 @@ package body Handlers is
      Nibble := Integer(I and 16#000F#);
 
      for Line in 0 .. Nibble loop
-        Line_Value := Vm.Mem(Vm.I + Line);
+        Line_Value := 0; -- Vm.Mem(Vm.I + Line);
         for Xpos in 0 .. 8 loop
            Pixel := Line_Value and Rshift(2#10000000#, Xpos);
            if Pixel /= 0 then
@@ -236,4 +236,5 @@ package body Handlers is
       Class_F.LD(i, X, vm);
     end if;
   end handler_F;
+
 end Handlers;

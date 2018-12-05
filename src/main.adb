@@ -36,9 +36,9 @@ with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
 
 
 -- with Ada.Text_IO; use Ada.Text_IO;
-with Stack; use Stack;
 with Graphics; use Graphics;
 with Keyboard; use Keyboard;
+with Registers; use Registers;
 
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
@@ -54,14 +54,13 @@ procedure Main
 is
    BG : Bitmap_Color := (Alpha => 255, others => 0);
 
-   Screen : Pixel_Buffer := (others => False);
    Keyboard : Keyboard_Buffer := (others => False);
    Keyboard_Changed : Boolean := False;
-   Pressed_keys : Keys := (others => False);
 
-   S : LifoStack;
-   B : Boolean;
-   E : Integer;
+   VM : Registers.Registers;
+
+   --B : Boolean;
+   --E : Integer;
 begin
    --  Initialize LCD
    Display.Initialize;
@@ -95,11 +94,10 @@ begin
       Display.Hidden_Buffer (1).Fill;
 
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
-      -- Display.Hidden_Buffer (1).Fill_Circle (Ball_Pos, 10);
 
       Draw_Borders;
       Render_Keyboard(Keyboard);
-      Render_Screen(Screen);
+      Render_Screen(VM.Screen);
 
       declare
          State : constant TP_State := Touch_Panel.Get_All_Touch_Points;
@@ -109,7 +107,7 @@ begin
          case State'Length is
             when 0 =>
                if Keyboard_Changed then
-                  Reset_Pressed_Keys(Pressed_Keys);
+                  Reset_Pressed_Keys(VM.Pressed_Keys);
                   Reset_Keyboard(Keyboard);
                   BG := HAL.Bitmap.Black;
                   Keyboard_Changed := False;
@@ -119,7 +117,7 @@ begin
                   Current_X := State (Id).X;
                   Current_Y := State (Id).Y;
                   if Current_X >= Keyboard_Start then
-                     Get_Pressed_Key(Keyboard, Pressed_Keys,
+                     Get_Pressed_Key(Keyboard, VM.Pressed_Keys,
                                      Current_X, Current_Y);
                   end if;
                end loop;
@@ -130,10 +128,5 @@ begin
       Display.Update_Layer (1, Copy_Back => True);
 
    end loop;
-
-  B := Stack_Push(S, 10);
---  Put_Line(B'Image);
-  E := Stack_Pop(S);
---  Put_Line(E'Image);
 
 end Main;
