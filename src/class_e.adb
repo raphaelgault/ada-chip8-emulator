@@ -8,20 +8,18 @@ with Keyboard; use Keyboard;
 package body Class_E is
   procedure SKP (x : in Integer; vm : in out Registers.Registers)
   is
-     Keyboard : Keys := (others => false);
   begin
      -- Put_Line ("SKP");
-     if Keyboard(X) = True then
+     if Vm.Keyboard(X) = True then
         Vm.Pc := Vm.Pc + 1;
      end if;
   end SKP;
 
   procedure SKNP (x : in Integer; vm : in out Registers.Registers)
   is
-     Keyboard : Keys := (others => false);
   begin
      -- Put_Line ("SKNP");
-     if Keyboard(X) = False then
+     if Vm.Keyboard(X) = False then
         Vm.Pc := Vm.Pc + 1;
      end if;
   end SKNP;

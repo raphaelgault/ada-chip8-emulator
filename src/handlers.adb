@@ -184,7 +184,6 @@ package body Handlers is
      Nibble : Integer;
      Line_Value : Integer_16;
      Pixel : Integer_16;
-     Screen : Pixel_Buffer := (others => false);
      Screen_Pos : Integer;
   begin
      X := Integer(Rshirt(I and 16#0F00#, 8));
@@ -197,7 +196,7 @@ package body Handlers is
            Pixel := Line_Value and Rshift(2#10000000#, Xpos);
            if Pixel /= 0 then
               Screen_Pos := X + Xpos + ((Y + Line) * 64);
-              Screen(Screen_Pos) := Screen(Screen_Pos) xor True;
+              Vm.Screen(Screen_Pos) := Vm.Screen(Screen_Pos) xor True;
            end if;
         end loop;
      end loop;
