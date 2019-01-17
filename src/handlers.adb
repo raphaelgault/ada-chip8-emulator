@@ -196,18 +196,18 @@ package body Handlers is
      X : Integer;
      Y : Integer;
      Nibble : Integer;
-     Line_Value : Opcode;
+     Line_Value : Byte;
      Pixel : Opcode;
      Screen_Pos : Integer;
   begin
-     X := Integer(Rshift(I and 16#0F00#, 8));
-     Y := Integer(Rshift(I and 16#00F0#, 4));
+     X := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#0F00#, 8))));
+     Y := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#00F0#, 4))));
      Nibble := Integer(I and 16#000F#);
 
      for Line in 0 .. Nibble loop
-        Line_Value := 0; -- Vm.Mem(Vm.I + Line);
+        Line_Value := Mem(Vm.I + Line);
         for Xpos in 0 .. 8 loop
-           Pixel := Line_Value and Rshift(2#10000000#, Xpos);
+           Pixel := Opcode(Line_Value) and Rshift(2#10000000#, Xpos);
            if Pixel /= 0 then
               Screen_Pos := X + Xpos + ((Y + Line) * 64);
               Vm.Screen(Screen_Pos) := Vm.Screen(Screen_Pos) xor True;
