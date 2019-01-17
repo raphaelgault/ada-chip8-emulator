@@ -10,7 +10,7 @@ package body Class_E is
   is
   begin
      -- Put_Line ("SKP");
-     if Vm.Keyboard(X) = True then
+     if Vm.Pressed_Keys(X) = True then
         Vm.Pc := Vm.Pc + 1;
      end if;
   end SKP;
@@ -19,7 +19,7 @@ package body Class_E is
   is
   begin
      -- Put_Line ("SKNP");
-     if Vm.Keyboard(X) = False then
+     if Vm.Pressed_Keys(X) = False then
         Vm.Pc := Vm.Pc + 1;
      end if;
   end SKNP;

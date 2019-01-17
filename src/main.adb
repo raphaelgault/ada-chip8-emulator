@@ -35,10 +35,14 @@ with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
 --  must be somewhere in the closure of the context clauses.
 
 
--- with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO; use Ada.Text_IO;
+
+with Handlers; use Handlers;
 with Graphics; use Graphics;
 with Keyboard; use Keyboard;
 with Registers; use Registers;
+with Rom; use Rom;
+with Types; use Types;
 
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
@@ -59,8 +63,9 @@ is
 
    VM : Registers.Registers;
 
-   --B : Boolean;
-   --E : Integer;
+   N : Opcode;
+   I : Opcode;
+
 begin
    --  Initialize LCD
    Display.Initialize;
@@ -89,6 +94,14 @@ begin
       if User_Button.Has_Been_Pressed then
          BG := HAL.Bitmap.Blanched_Almond;
       end if;
+
+      N := Rom.Instructions(VM.PC);
+      I := N and 16#F000#;
+      I := rshift(N, 12);
+
+      Handlers.Handler_Table(Integer(I)).all(Rom.instructions(VM.PC), VM);
+
+      VM.PC := VM.PC + 1;
 
       Display.Hidden_Buffer (1).Set_Source (BG);
       Display.Hidden_Buffer (1).Fill;

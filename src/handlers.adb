@@ -1,9 +1,10 @@
+with Ada.Numerics.Discrete_Random;
 with Ada.Text_IO; use Ada.Text_IO;
-with Class_Eight; use Class_Eight;
+
 with Class_E; use Class_E;
+with Class_Eight; use Class_Eight;
 with Class_F; use Class_F;
 with Stack; use Stack;
-with Ada.Numerics.Discrete_Random;
 
 with Graphics; use Graphics;
 
@@ -182,12 +183,12 @@ package body Handlers is
      X : Integer;
      Y : Integer;
      Nibble : Integer;
-     Line_Value : Integer_16;
-     Pixel : Integer_16;
+     Line_Value : Opcode;
+     Pixel : Opcode;
      Screen_Pos : Integer;
   begin
-     X := Integer(Rshirt(I and 16#0F00#, 8));
-     X := Integer(Rshirt(I and 16#0F00#, 4));
+     X := Integer(Rshift(I and 16#0F00#, 8));
+     X := Integer(Rshift(I and 16#0F00#, 4));
      Nibble := Integer(I and 16#000F#);
 
      for Line in 0 .. Nibble loop
@@ -204,7 +205,6 @@ package body Handlers is
 
   procedure handler_E (i : in Opcode; vm : in out Registers.Registers)
   is
-    package Byte_IO is new Ada.Text_Io.Modular_IO (Types.Opcode);
     X : Integer;
     E : Integer;
   begin
