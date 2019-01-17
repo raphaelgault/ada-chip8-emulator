@@ -1,6 +1,9 @@
 # Object file
 *.o
 obj/
+objdebug/
+objrelease/
+main.bin
 
 # Ada Library Information
 *.ali
