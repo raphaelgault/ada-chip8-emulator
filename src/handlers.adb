@@ -20,6 +20,16 @@ package body Handlers is
     return v;
   end;
 
+  function lshift (val : opcode; num : Integer) return Opcode
+  is
+    v : Opcode := val;
+  begin
+    for I in 1 .. num loop
+      v := v * 2;
+    end loop;
+    return v;
+  end;
+
   procedure handler_0 (i : in Opcode; vm : in out Registers.Registers)
   is
     A : Addr;
@@ -65,7 +75,7 @@ package body Handlers is
     X := Integer(rshift(i and 16#0F00#, 8));
     K := rshift(i and 16#00FF#, 8);
     if vm.GeneralRegisters(X) = Byte(K) then
-      vm.PC := vm.PC + 1;
+      vm.PC := vm.PC + 2;
     end if;
   end handler_3;
 
@@ -77,7 +87,7 @@ package body Handlers is
     X := Integer(rshift(i and 16#0F00#, 8));
     K := Byte(i and 16#00FF#);
     if vm.GeneralRegisters(X) /= K then
-      vm.PC := vm.PC + 1;
+      vm.PC := vm.PC + 2;
     end if;
   end handler_4;
 
@@ -89,7 +99,7 @@ package body Handlers is
     X := Integer(rshift(i and 16#0F00#, 8));
     Y := Integer(rshift(i and 16#00F0#, 4));
     if vm.GeneralRegisters(X) = vm.GeneralRegisters(Y) then
-      vm.PC := vm.PC + 1;
+      vm.PC := vm.PC + 2;
     end if;
   end handler_5;
 
@@ -141,7 +151,7 @@ package body Handlers is
     X := Integer (rshift(i and 16#0F00#, 8));
     Y := Integer (rshift(i and 16#00F0#, 4));
     if X /= Y then
-      vm.PC := vm.PC + 1; -- we skip next instruction;
+      vm.PC := vm.PC + 2; -- we skip next instruction;
     end if;
   end handler_9;
 
@@ -188,7 +198,7 @@ package body Handlers is
      Screen_Pos : Integer;
   begin
      X := Integer(Rshift(I and 16#0F00#, 8));
-     X := Integer(Rshift(I and 16#0F00#, 4));
+     Y := Integer(Rshift(I and 16#00F0#, 4));
      Nibble := Integer(I and 16#000F#);
 
      for Line in 0 .. Nibble loop

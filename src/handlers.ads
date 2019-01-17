@@ -3,6 +3,7 @@ with Registers; use Registers;
 
 package Handlers is
   function rshift(val : opcode; num : Integer) return Opcode;
+  function lshift(val : opcode; num : Integer) return Opcode;
   procedure handler_0 (i : in Opcode; vm : in out Registers.Registers);
   procedure handler_1 (i : in Opcode; vm : in out Registers.Registers);
   procedure handler_2 (i : in Opcode; vm : in out Registers.Registers);

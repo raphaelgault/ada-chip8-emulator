@@ -1,6 +1,9 @@
 with Stack; use Stack;
 with Types; use Types;
+with Registers; use Registers;
+with Rom; use Rom;
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces; use Interfaces;
 
 package body Registers is
   procedure dump_state(vm :Registers) is
@@ -29,4 +32,19 @@ package body Registers is
     Put_Line ("stack top : " & Integer(Stack_Top(vm.stack))'Image);
     Put_Line ("============================================");
   end dump_state;
+
+  procedure load_rom is
+     N : Opcode;
+     B : Unsigned_64;
+     E : Opcode;
+  begin
+     for I in instructions'Range loop
+       Put_Line ("Instruction #" & I'Image);
+       N := instructions(I);
+       B := Shift_Right(Unsigned_64(N), 8);
+       E := N and 16#00FF#;
+       mem(512 + 2 * Integer(E)) := Byte(B);
+       mem(512 + 2 * Integer(E) + 1) := Byte(E);
+     end loop;
+  end load_rom;
 end Registers;

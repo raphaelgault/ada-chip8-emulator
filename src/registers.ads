@@ -18,6 +18,8 @@ package Registers is
       Screen : Pixel_Buffer := (others => False);
       Pressed_keys : Keys := (others => False);
   end record;
+  mem: RAM := (others => 0);
   pragma Pack(Registers);
   procedure dump_state(vm :Registers);
+  procedure load_rom;
 end Registers;

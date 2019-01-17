@@ -90,15 +90,15 @@ begin
    -- Init keyboard
    Reset_Keyboard(Keyboard);
 
+   VM.PC := 512;
    loop
       if User_Button.Has_Been_Pressed then
          BG := HAL.Bitmap.Blanched_Almond;
       end if;
 
-      N := Rom.Instructions(VM.PC);
-      I := N and 16#F000#;
+      N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
+      N := N + Opcode(mem(VM.PC + 1));
       I := rshift(N, 12);
-
       Handlers.Handler_Table(Integer(I)).all(Rom.instructions(VM.PC), VM);
 
       VM.PC := VM.PC + 1;

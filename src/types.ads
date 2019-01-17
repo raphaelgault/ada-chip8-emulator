@@ -5,7 +5,6 @@ package Types is
   subtype Integer_16 is Integer range -32768 .. 32767;
   type GeneralRegs is array (0 .. 15) of Byte;
   pragma Pack(GeneralRegs);
-  type RAM is array (Addr) of Integer_16;
+  type RAM is array (Addr) of Byte;
   pragma Pack(RAM);
-  --mem: RAM := (others => 0);
 end Types;

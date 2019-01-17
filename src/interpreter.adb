@@ -5,6 +5,7 @@ with Types; use Types;
 with Rom; use Rom;
 with Handlers; use Handlers;
 with Registers; use Registers;
+with Interfaces; use Interfaces;
 
 package body Interpreter is
   procedure Interprete
@@ -16,8 +17,9 @@ package body Interpreter is
      VM : Registers.Registers;
   begin
 
-    for E in Code'Range loop
-      N := Rom.instructions(E);
+    loop
+      N := mem(VM.PC);
+      N := 
       I := N and 16#F000#;
       --Byte_IO.Put(Item => N, Base => 16);
       Put(E'Image & " -> Class : ");
