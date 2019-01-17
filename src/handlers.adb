@@ -52,7 +52,7 @@ package body Handlers is
     N : Integer;
   begin
     N := Integer(i and 16#0FFF#);
-    vm.PC := N;
+    vm.PC := N - 2;
   end handler_1;
 
   procedure handler_2 (i : in Opcode; vm : in out Registers.Registers)

@@ -101,9 +101,9 @@ begin
       N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
       N := N + Opcode(mem(VM.PC + 1));
       I := rshift(N, 12);
-      Handlers.Handler_Table(Integer(I)).all(Rom.instructions(VM.PC), VM);
+      Handlers.Handler_Table(Integer(I)).all(N, VM);
 
-      VM.PC := VM.PC + 1;
+      VM.PC := VM.PC + 2;
 
       Display.Hidden_Buffer (1).Set_Source (BG);
       Display.Hidden_Buffer (1).Fill;
