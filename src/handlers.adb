@@ -222,7 +222,7 @@ package body Handlers is
     E : Integer;
   begin
     E := Integer(i and 16#00FF#);
-    X := Integer(rshift(i and 16#0F00#, 4));
+    X := Integer(rshift(i and 16#0F00#, 8));
 
     if E = 16#9E# then
       Class_E.SKP(X, vm);
@@ -241,7 +241,7 @@ package body Handlers is
     E : Integer;
   begin
     E := Integer(i and 16#00FF#);
-    X := Integer(rshift(i and 16#0F00#, 4));
+    X := Integer(rshift(i and 16#0F00#, 8));
 
     if E = 16#1E# then
       Class_F.ADD(X, vm);

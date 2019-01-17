@@ -8,29 +8,46 @@ package body Class_F is
   procedure LD (i : Opcode ; x : Integer; vm : in out Registers.Registers)
   is
     B : Byte;
+    N : Integer;
   begin
     B := Byte(i and 16#00FF#);
     if B = 16#07# then
       vm.GeneralRegisters(X) := vm.DT;
     elsif B = 16#0A# then
       --Put_Line ("LD Vx, K");
-      null;
+      --while VM.Pressed_Keys = (others => False) loop
+      --  null;
+      --end loop;
+      for K in VM.Pressed_Keys'Range loop
+        if VM.Pressed_Keys(K) = True then
+          VM.GeneralRegisters(X) := Byte(K);
+          exit;
+        end if;
+      end loop;
     elsif B = 16#15# then
       vm.DT := vm.GeneralRegisters(X);
     elsif B = 16#18# then
       vm.ST := vm.GeneralRegisters(X);
+    elsif B = 16#1E# then
+      vm.I := vm.I + Addr(vm.GeneralRegisters(X));
     elsif B = 16#29# then
       --Put_Line ("LD F, Vx");
-      null;
+      vm.I := Integer(vm.GeneralRegisters(X)) * 5;
     elsif B = 16#33# then
       --Put_Line ("LD B, Vx");
-      null;
+      mem(vm.I) := vm.GeneralRegisters(X) / 100;
+      mem(vm.I + 1) := (vm.GeneralRegisters(X) / 10) mod 10;
+      mem(vm.I + 2) := vm.GeneralRegisters(X) mod 10;
     elsif B = 16#55# then
       --Put_Line ("LD [I], Vx");
-      null;
+      for I in 0 .. X loop
+        mem(vm.I + I) := vm.GeneralRegisters(I);
+      end loop;
     elsif B = 16#65# then
       --Put_Line ("LD [I], Vx");
-      null;
+      for I in 0 .. X loop
+        vm.GeneralRegisters(I) := mem(vm.I + I);
+      end loop;
     end if;
     -- need to differentiate the 8 different LD calls of this class;
   end LD;
