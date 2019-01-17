@@ -39,12 +39,12 @@ package body Registers is
      E : Opcode;
   begin
      for I in instructions'Range loop
-       Put_Line ("Instruction #" & I'Image);
+       --Put_Line ("Instruction #" & I'Image);
        N := instructions(I);
        B := Shift_Right(Unsigned_64(N), 8);
        E := N and 16#00FF#;
-       mem(512 + 2 * Integer(E)) := Byte(B);
-       mem(512 + 2 * Integer(E) + 1) := Byte(E);
+       mem(512 + 2 * Integer(I)) := Byte(B);
+       mem(512 + 2 * Integer(I) + 1) := Byte(E);
      end loop;
   end load_rom;
 end Registers;

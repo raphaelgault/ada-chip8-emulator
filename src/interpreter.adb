@@ -22,10 +22,10 @@ package body Interpreter is
       N := 
       I := N and 16#F000#;
       --Byte_IO.Put(Item => N, Base => 16);
-      Put(E'Image & " -> Class : ");
+      --Put(E'Image & " -> Class : ");
       I := rshift(N, 12);
-      Byte_IO.Put(Item => I, Base => 16);
-      Put_Line(" " & Integer(I)'Image & "");
+      --Byte_IO.Put(Item => I, Base => 16);
+      --Put_Line(" " & Integer(I)'Image & "");
       Handlers.Handler_Table(Integer(I)).all(Rom.instructions(E), VM);
     end loop;
   end Interprete;

@@ -90,6 +90,8 @@ begin
    -- Init keyboard
    Reset_Keyboard(Keyboard);
 
+   load_rom;
+
    VM.PC := 512;
    loop
       if User_Button.Has_Been_Pressed then

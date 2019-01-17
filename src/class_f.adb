@@ -13,19 +13,24 @@ package body Class_F is
     if B = 16#07# then
       vm.GeneralRegisters(X) := vm.DT;
     elsif B = 16#0A# then
-      Put_Line ("LD Vx, K");
+      --Put_Line ("LD Vx, K");
+      null;
     elsif B = 16#15# then
       vm.DT := vm.GeneralRegisters(X);
     elsif B = 16#18# then
       vm.ST := vm.GeneralRegisters(X);
     elsif B = 16#29# then
-      Put_Line ("LD F, Vx");
+      --Put_Line ("LD F, Vx");
+      null;
     elsif B = 16#33# then
-      Put_Line ("LD B, Vx");
+      --Put_Line ("LD B, Vx");
+      null;
     elsif B = 16#55# then
-      Put_Line ("LD [I], Vx");
+      --Put_Line ("LD [I], Vx");
+      null;
     elsif B = 16#65# then
-      Put_Line ("LD [I], Vx");
+      --Put_Line ("LD [I], Vx");
+      null;
     end if;
     -- need to differentiate the 8 different LD calls of this class;
   end LD;

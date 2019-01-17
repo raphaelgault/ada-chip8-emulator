@@ -37,12 +37,13 @@ package body Handlers is
   begin
     K := Byte(i and 16#FF#);
     if K = 16#E0# then
-      Put_Line ("CLS");
+      --Put_Line ("CLS");
+      null;
     elsif K = 16#EE# then
       vm.PC := Stack_Pop(vm.Stack);
     else
       A := Addr(i and 16#0FFF#);
-      Put_Line ("SYS");
+      --Put_Line ("SYS");
     end if;
   end handler_0;
 
@@ -62,7 +63,8 @@ package body Handlers is
     N := Integer(i and 16#0FFF#);
     B := Stack.Stack_Push(vm.Stack, vm.PC);
     if not B then
-      Put_Line ("Error while pushing value of PC on the stack");
+      --Put_Line ("Error while pushing value of PC on the stack");
+      null;
     end if;
     vm.PC := N;
   end handler_2;
@@ -138,7 +140,8 @@ package body Handlers is
     elsif E = 14 then
       Class_Eight.Instr_Table(8).all(X, Y, vm);
     else
-      Put_Line ("Unknown Instruction with opcode " & Integer(I)'Image);
+      --Put_Line ("Unknown Instruction with opcode " & Integer(I)'Image);
+      null;
     end if;
 
   end handler_8;
@@ -226,7 +229,8 @@ package body Handlers is
     elsif E = 16#A1# then
       Class_E.SKNP(X, vm);
     else
-      Put_Line ("Unknown Instruction with opcode " & E'Image & " - " & Integer(I)'Image);
+      --Put_Line ("Unknown Instruction with opcode " & E'Image & " - " & Integer(I)'Image);
+      null;
     end if;
 
   end handler_E;
