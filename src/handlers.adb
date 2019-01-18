@@ -204,9 +204,9 @@ package body Handlers is
      Y := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#00F0#, 4))));
      Nibble := Integer(I and 16#000F#);
 
-     for Line in 0 .. Nibble loop
+     for Line in 0 .. Nibble - 1 loop
         Line_Value := Mem(Vm.I + Line);
-        for Xpos in 0 .. 8 loop
+        for Xpos in 0 .. 7 loop
            Pixel := Opcode(Line_Value) and Rshift(2#10000000#, Xpos);
            if Pixel /= 0 then
               Screen_Pos := X + Xpos + ((Y + Line) * 64);
