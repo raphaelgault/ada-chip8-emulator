@@ -105,7 +105,7 @@ begin
 
       VM.PC := VM.PC + 2;
       if VM.DT > 0 then
-         VM.DT := VM.DT - 1;
+         VM.DT := VM.DT - 4;
       end if;
 
       Display.Hidden_Buffer (1).Set_Source (BG);
