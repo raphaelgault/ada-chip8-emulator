@@ -11,7 +11,7 @@ package body Class_E is
   begin
      -- Put_Line ("SKP");
      if Vm.Pressed_Keys(X) = True then
-        Vm.Pc := Vm.Pc + 1;
+        Vm.Pc := Vm.Pc + 2;
      end if;
   end SKP;
 
@@ -20,7 +20,7 @@ package body Class_E is
   begin
      -- Put_Line ("SKNP");
      if Vm.Pressed_Keys(X) = False then
-        Vm.Pc := Vm.Pc + 1;
+        Vm.Pc := Vm.Pc + 2;
      end if;
   end SKNP;
 
