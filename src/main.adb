@@ -104,6 +104,9 @@ begin
       Handlers.Handler_Table(Integer(I)).all(N, VM);
 
       VM.PC := VM.PC + 2;
+      if VM.DT > 0 then
+         VM.DT := VM.DT - 1;
+      end if;
 
       Display.Hidden_Buffer (1).Set_Source (BG);
       Display.Hidden_Buffer (1).Fill;

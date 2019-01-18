@@ -35,9 +35,10 @@ package body Class_F is
         mem(vm.I + I) := vm.GeneralRegisters(I);
       end loop;
     elsif B = 16#65# then
-      --Put_Line ("LD [I], Vx");
+      --Put_Line ("LD Vx, [I]");
       for I in 0 .. X loop
-        vm.GeneralRegisters(I) := mem(vm.I + I);
+         vm.GeneralRegisters(I) := mem(vm.I + I);
+         -- TODO: check is add
       end loop;
     end if;
     -- need to differentiate the 8 different LD calls of this class;

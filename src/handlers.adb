@@ -37,13 +37,15 @@ package body Handlers is
   begin
     K := Byte(i and 16#FF#);
     if K = 16#E0# then
-      --Put_Line ("CLS");
-      null;
+       -- Clear the display
+       VM.Screen := (others => false);
     elsif K = 16#EE# then
+       -- Return from subroutine
       vm.PC := Stack_Pop(vm.Stack);
     else
-      A := Addr(i and 16#0FFF#);
-      --Put_Line ("SYS");
+       -- Jump to addr - Ignored by interpreter?
+       A := Addr(i and 16#0FFF#);
+       -- TODO
     end if;
   end handler_0;
 
@@ -66,7 +68,7 @@ package body Handlers is
       --Put_Line ("Error while pushing value of PC on the stack");
       null;
     end if;
-    vm.PC := N;
+    vm.PC := N - 2;
   end handler_2;
 
   procedure handler_3 (i : in Opcode; vm : in out Registers.Registers)
