@@ -14,16 +14,7 @@ package body Class_F is
     if B = 16#07# then
       vm.GeneralRegisters(X) := vm.DT;
     elsif B = 16#0A# then
-      --Put_Line ("LD Vx, K");
-      --while VM.Pressed_Keys = (others => False) loop
-      --  null;
-      --end loop;
-      for K in VM.Pressed_Keys'Range loop
-        if VM.Pressed_Keys(K) = True then
-          VM.GeneralRegisters(X) := Byte(K);
-          exit;
-        end if;
-      end loop;
+      VM.GeneralRegisters(X) := Byte(Get_Pressed_Key(VM.Pressed_Keys));
     elsif B = 16#15# then
       vm.DT := vm.GeneralRegisters(X);
     elsif B = 16#18# then

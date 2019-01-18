@@ -38,4 +38,5 @@ package Registers is
   pragma Pack(Registers);
   procedure dump_state(vm :Registers);
   procedure load_rom;
+  function Get_Pressed_Key(keyboard: Keys) return Integer;
 end Registers;
