@@ -24,7 +24,7 @@ package body Graphics is
          if Screen(I) = True then
             Cur_Pos := Compute_Position(I);
             Cur_Rect.Position := Cur_Pos;
-            Display.Hidden_Buffer(1).Fill_Rect(Cur_Rect);
+            Display.Hidden_Buffer(2).Fill_Rect(Cur_Rect);
          end if;
       end loop;
    end;
@@ -34,6 +34,8 @@ package body Graphics is
       Pt : Point := (0, 0);
       R : Rect;
    begin
+      Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
+
       -- Compute borders
       R := (Pt, Screen_Height, Screen_Width);
       Display.Hidden_Buffer(1).Draw_Rect(R);
@@ -50,6 +52,8 @@ package body Graphics is
          Pt := (160, I * 40);
          Display.Hidden_Buffer(1).Draw_Horizontal_Line(Pt, 80);
       end loop;
+
+      Display.Update_Layer (1, Copy_Back => False);
    end;
 
 end;

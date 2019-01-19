@@ -43,7 +43,7 @@ package body Keyboard is
          if Keyboard(I) = True then
             Cur_Pos := (Keyboard_Start + ((I mod Line) * 4), (I / Line) * 4);
             Cur_Rect := (Cur_Pos, 4, 4);
-            Display.Hidden_Buffer(1).Fill_Rect(Cur_Rect);
+            Display.Hidden_Buffer(2).Fill_Rect(Cur_Rect);
          end if;
       end loop;
    end;

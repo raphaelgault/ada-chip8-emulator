@@ -67,11 +67,11 @@ is
    I : Opcode;
 
    DT : Byte;
-
 begin
    --  Initialize LCD
    Display.Initialize;
    Display.Initialize_Layer (1, ARGB_8888);
+   Display.Initialize_Layer (2, ARGB_8888);
 
    --  Initialize touch panel
    Touch_Panel.Initialize;
@@ -83,11 +83,15 @@ begin
    LCD_Std_Out.Current_Background_Color := BG;
 
    --  Clear LCD (set background)
-   Display.Hidden_Buffer (1).Set_Source (BG);
+   LCD_Std_Out.Clear_Screen;
+
+   Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Transparent);
    Display.Hidden_Buffer (1).Fill;
 
-   LCD_Std_Out.Clear_Screen;
-   Display.Update_Layer (1, Copy_Back => True);
+   Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Transparent);
+   Display.Hidden_Buffer (2).Fill;
+
+   Draw_Borders;
 
    -- Init keyboard
    Reset_Keyboard(Keyboard);
@@ -97,7 +101,8 @@ begin
    VM.PC := 512;
    loop
       if User_Button.Has_Been_Pressed then
-         BG := HAL.Bitmap.Blanched_Almond;
+         null;
+         -- Will display the menu
       end if;
 
       N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
@@ -119,12 +124,11 @@ begin
          end if;
       end if;
 
-      Display.Hidden_Buffer (1).Set_Source (BG);
-      Display.Hidden_Buffer (1).Fill;
+      Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Transparent);
+      Display.Hidden_Buffer (2).Fill;
 
-      Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
+      Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
 
-      Draw_Borders;
       Render_Keyboard(Keyboard);
       Render_Screen(VM.Screen);
 
@@ -138,7 +142,7 @@ begin
                if Keyboard_Changed then
                   Reset_Pressed_Keys(VM.Pressed_Keys);
                   Reset_Keyboard(Keyboard);
-                  BG := HAL.Bitmap.Black;
+                  BG := HAL.Bitmap.Transparent;
                   Keyboard_Changed := False;
                end if;
             when others =>
@@ -154,7 +158,7 @@ begin
          end case;
       end;
       --  Update screen
-      Display.Update_Layer (1, Copy_Back => True);
+      Display.Update_Layer (2, Copy_Back => False);
 
    end loop;
 
