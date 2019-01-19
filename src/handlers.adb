@@ -77,7 +77,7 @@ package body Handlers is
     K : Opcode;
   begin
     X := Integer(rshift(i and 16#0F00#, 8));
-    K := rshift(i and 16#00FF#, 8);
+    K := i and 16#00FF#;
     if vm.GeneralRegisters(X) = Byte(K) then
       vm.PC := vm.PC + 2;
     end if;

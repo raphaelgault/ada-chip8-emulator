@@ -34,5 +34,7 @@ Click [here](https://rawgit.com/alexanderdickson/Chip-8-Emulator/master/index.ht
 
 ## Working ROMs
 
-* PONG (TODO: check keyboard)
 * 15PUZZLE
+* IBM
+* PONG (TODO: check keyboard)
+* PONG2 (TODO: check keyboard)
