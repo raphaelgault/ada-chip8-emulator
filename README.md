@@ -31,3 +31,8 @@ make gdb  # start gdb and connect to the gdb-server
 ```
 
 Click [here](https://rawgit.com/alexanderdickson/Chip-8-Emulator/master/index.html) to compare with the original ROM behaviour.
+
+## Working ROMs
+
+* PONG (TODO: check keyboard)
+* 15PUZZLE
