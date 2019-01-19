@@ -66,6 +66,8 @@ is
    N : Opcode;
    I : Opcode;
 
+   DT : Byte;
+
 begin
    --  Initialize LCD
    Display.Initialize;
@@ -104,8 +106,17 @@ begin
       Handlers.Handler_Table(Integer(I)).all(N, VM);
 
       VM.PC := VM.PC + 2;
-      if VM.DT > 0 then
-         VM.DT := VM.DT - 4;
+      if VM.DT /= 0 then
+         DT := VM.DT - 8;
+         -- Temporary : when the DT is substracted, it should be 0
+         -- VM.DT is modular, we do not want is to go to the higher bound
+         -- Solution : left it like this ou change Byte type.
+         -- TODO: check value 259 in condition
+         if DT > 249 then
+            VM.DT := 0;
+         else
+            VM.DT := VM.DT - 8;
+         end if;
       end if;
 
       Display.Hidden_Buffer (1).Set_Source (BG);
