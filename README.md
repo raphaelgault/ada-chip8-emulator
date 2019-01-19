@@ -35,6 +35,35 @@ Click [here](https://rawgit.com/alexanderdickson/Chip-8-Emulator/master/index.ht
 ## Working ROMs
 
 * 15PUZZLE
+* _CONNECT4_
+* _GUESS_
+* _HIDDEN_
 * IBM
-* PONG (TODO: check keyboard)
-* PONG2 (TODO: check keyboard)
+* INVADERS
+* _KALEID_
+* MAZE
+* _MERLIN_
+* _MISSILE_
+* _PONG_
+* _PONG2_
+* _PUZZLE_
+* _SYGYZY_
+* _TICTAC_
+* _UFO_
+* _VBRIX_
+* _WIPEOFF_
+
+All ROMs in italic need an additional check with the keyboard.
+
+## Not working ROMs
+
+* BLITZ : Good display but keyboard not working : Maybe the wait for keyboard function?
+* BLINKY : No display
+* BRIX : Good beginning of display but weird game playing
+* TANK : En fait je comprends pas ce que ça doit faire, ça fait des trucs différents
+* TETRIS : Bonne grosse exception au runtime
+* VERS : Bonne grosse exception au runtime
+
+## Notes
+
+Maybe we should increase the timer decrementation to make it faster.
