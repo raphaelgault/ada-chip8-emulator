@@ -47,6 +47,6 @@ package body Class_F is
   procedure ADD (x : Integer; vm : in out Registers.Registers)
   is
   begin
-    vm.I := vm.I + x;
+    vm.I := vm.I + Addr(Vm.GeneralRegisters(X));
   end ADD;
 end Class_F;
