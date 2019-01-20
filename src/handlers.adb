@@ -201,6 +201,7 @@ package body Handlers is
      Line_Value : Byte;
      Pixel : Opcode;
      Screen_Pos : Integer;
+
   begin
      X := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#0F00#, 8))));
      Y := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#00F0#, 4))));
@@ -211,7 +212,8 @@ package body Handlers is
         for Xpos in 0 .. 7 loop
            Pixel := Opcode(Line_Value) and Rshift(2#10000000#, Xpos);
            if Pixel /= 0 then
-              Screen_Pos := X + Xpos + ((Y + Line) * 64);
+              Screen_Pos := ((X + Xpos) mod 64) + ((Y + Line) mod 32) * 64;
+
               Vm.Screen(Screen_Pos) := Vm.Screen(Screen_Pos) xor True;
            end if;
         end loop;
