@@ -66,9 +66,17 @@ package body Class_Eight is
   end SHR;
 
   procedure SUBN (x : Integer; y : Integer; vm : in out Registers.Registers) is
+    A : Types.Byte;
+    B : Types.Byte;
   begin
-    SUB(x, y, vm);
-    vm.GeneralRegisters(15) := not vm.GeneralRegisters(15);
+    A := vm.GeneralRegisters(X);
+    B := vm.GeneralRegisters(Y);
+    vm.GeneralRegisters(X) := B - A;
+    if Integer(B) > Integer(A) then
+      vm.GeneralRegisters(15) := 1;
+    else
+      vm.GeneralRegisters(15) := 0;
+    end if;
   end SUBN;
 
   procedure SHL (x : Integer; y : Integer; vm : in out Registers.Registers) is

@@ -117,15 +117,15 @@ begin
       end if;
 
       if VM.DT /= 0 then
-         DT := VM.DT - 32;
+         DT := VM.DT - 1;
          -- Temporary : when the DT is substracted, it should be 0
          -- VM.DT is modular, we do not want is to go to the higher bound
          -- Solution : left it like this ou change Byte type.
          -- TODO: check value 259 in condition
-         if DT > 225 then
+         if DT > 255 then
             VM.DT := 0;
          else
-            VM.DT := VM.DT - 32;
+            VM.DT := VM.DT - 1;
          end if;
       end if;
 
