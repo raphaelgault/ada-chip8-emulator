@@ -105,12 +105,14 @@ begin
          -- Will display the menu
       end if;
 
-      N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
-      N := N + Opcode(mem(VM.PC + 1));
-      I := rshift(N, 12);
-      Handlers.Handler_Table(Integer(I)).all(N, VM);
+      if VM.Blocked = -1 then
+        N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
+        N := N + Opcode(mem(VM.PC + 1));
+        I := rshift(N, 12);
+        Handlers.Handler_Table(Integer(I)).all(N, VM);
+        VM.PC := VM.PC + 2;
+      end if;
 
-      VM.PC := VM.PC + 2;
       if VM.DT /= 0 then
          DT := VM.DT - 8;
          -- Temporary : when the DT is substracted, it should be 0
@@ -151,6 +153,7 @@ begin
                   Current_Y := State (Id).Y;
                   if Current_X >= Keyboard_Start then
                      Get_Pressed_Key(Keyboard, VM.Pressed_Keys,
+                                     VM.GeneralRegisters, VM.Blocked,
                                      Current_X, Current_Y);
                   end if;
                end loop;

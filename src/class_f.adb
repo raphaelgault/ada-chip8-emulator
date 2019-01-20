@@ -14,7 +14,7 @@ package body Class_F is
     if B = 16#07# then
       vm.GeneralRegisters(X) := vm.DT;
     elsif B = 16#0A# then
-      VM.GeneralRegisters(X) := Byte(Get_Pressed_Key(VM.Pressed_Keys));
+      VM.Blocked := X; --VM.GeneralRegisters(X) := Byte(Get_Pressed_Key(VM.Pressed_Keys));
     elsif B = 16#15# then
       vm.DT := vm.GeneralRegisters(X);
     elsif B = 16#18# then

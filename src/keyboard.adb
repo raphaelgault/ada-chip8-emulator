@@ -1,3 +1,5 @@
+with Types; use Types;
+
 package body Keyboard is
    procedure Write_Key(Keyboard: in out Keyboard_buffer;
                        Code: in Integer; Pos: in Integer)
@@ -75,6 +77,8 @@ package body Keyboard is
 
    procedure Get_Pressed_Key(Keyboard: in out Keyboard_Buffer;
                              Pressed: in out Keys;
+                             Regs: in out GeneralRegs;
+                             Blocked: in out Integer;
                              X: in Position; Y: in Position)
    is
       Bottom_Start : constant Integer := Keyboard_Start + 40;
@@ -87,6 +91,10 @@ package body Keyboard is
       end if;
       if Pressed(Current_Key) = False then
          Pressed(Current_Key) := True;
+         if Blocked /= -1 then
+           Regs(Blocked) := Byte(Current_Key);
+           Blocked := -1;
+         end if;
          Update_Keyboard_Buffer(Keyboard, Current_key);
       end if;
    end;

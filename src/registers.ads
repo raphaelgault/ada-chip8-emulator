@@ -13,6 +13,7 @@ package Registers is
       ST : Byte; -- Sound Timer
       PC : Integer_16;
       SP : Byte;
+      Blocked : Integer := -1;
       -- mem : RAM := (others => 0);
       stack : LifoStack := Stack_Init;
       Screen : Pixel_Buffer := (others => False);
@@ -38,5 +39,5 @@ package Registers is
   pragma Pack(Registers);
   procedure dump_state(vm :Registers);
   procedure load_rom;
-  function Get_Pressed_Key(keyboard: Keys) return Integer;
+  --function Get_Pressed_Key(keyboard: Keys) return Integer;
 end Registers;

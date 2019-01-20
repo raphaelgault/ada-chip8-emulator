@@ -48,15 +48,15 @@ package body Registers is
      end loop;
   end load_rom;
   
-  function Get_Pressed_Key(keyboard: Keys) return Integer
-  is
-  begin
-    loop
-      for I in keyboard'Range loop
-        if keyboard(I) then
-          return I;
-        end if;
-      end loop;
-    end loop;
-  end Get_Pressed_Key;
+--  function Get_Pressed_Key(keyboard: Keys) return Integer
+--  is
+--  begin
+--    loop
+--      for I in keyboard'Range loop
+--        if keyboard(I) then
+--          return I;
+--        end if;
+--      end loop;
+--    end loop;
+--  end Get_Pressed_Key;
 end Registers;

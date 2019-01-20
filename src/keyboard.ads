@@ -3,6 +3,7 @@ with HAL.Bitmap;            use HAL.Bitmap;
 
 with Ada.Text_IO;           use Ada.Text_IO;
 with Interfaces;            use Interfaces;
+with Types;             use Types;
 
 package Keyboard is
    Keyboard_Start : constant Integer := 160;
@@ -25,5 +26,7 @@ package Keyboard is
    procedure Reset_Pressed_Keys(Pressed: in out Keys);
    procedure Get_Pressed_Key(Keyboard: in out Keyboard_Buffer;
                              Pressed: in out Keys;
+                             Regs: in out GeneralRegs;
+                             Blocked: in out Integer;
                              X: in Position; Y: in Position);
 end Keyboard;
