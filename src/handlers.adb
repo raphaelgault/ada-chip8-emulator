@@ -207,14 +207,18 @@ package body Handlers is
      Y := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#00F0#, 4))));
      Nibble := Integer(I and 16#000F#);
 
+     Vm.GeneralRegisters(15) := 0;
+
      for Line in 0 .. Nibble - 1 loop
         Line_Value := Mem(Vm.I + Line);
         for Xpos in 0 .. 7 loop
            Pixel := Opcode(Line_Value) and Rshift(2#10000000#, Xpos);
            if Pixel /= 0 then
               Screen_Pos := ((X + Xpos) mod 64) + ((Y + Line) mod 32) * 64;
-
               Vm.Screen(Screen_Pos) := Vm.Screen(Screen_Pos) xor True;
+              if Vm.Screen(Screen_Pos) = False then
+                 Vm.GeneralRegisters(15) := 1;
+              end if;
            end if;
         end loop;
      end loop;
