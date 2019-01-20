@@ -17,7 +17,7 @@ debug:
 	$(OBJCOPY) -O binary $(DEBUGDIR)/$(ELF) $(BIN)
 
 generate-rom:
-	./generate-rom.sh $(shell xxd -p ${ROM})
+	./tests/generate-rom.sh $(shell xxd -p ${ROM})
 
 flash:
 	st-flash --reset write $(BIN) 0x08000000

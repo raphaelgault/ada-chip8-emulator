@@ -53,7 +53,6 @@ package body Graphics is
          Display.Hidden_Buffer(1).Draw_Horizontal_Line(Pt, 80);
       end loop;
 
-      Display.Update_Layer (1, Copy_Back => False);
    end;
 
 end;

@@ -95,6 +95,9 @@ begin
 
    -- Init keyboard
    Reset_Keyboard(Keyboard);
+   Render_Keyboard(Keyboard);
+
+   Display.Update_Layer (1, Copy_Back => False);
 
    load_rom;
 
@@ -106,11 +109,11 @@ begin
       end if;
 
       if VM.Blocked = -1 then
-        N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
-        N := N + Opcode(mem(VM.PC + 1));
-        I := rshift(N, 12);
-        Handlers.Handler_Table(Integer(I)).all(N, VM);
-        VM.PC := VM.PC + 2;
+         N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
+         N := N + Opcode(mem(VM.PC + 1));
+         I := rshift(N, 12);
+         Handlers.Handler_Table(Integer(I)).all(N, VM);
+         VM.PC := VM.PC + 2;
       end if;
 
       if VM.DT /= 0 then
@@ -131,7 +134,7 @@ begin
 
       Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
 
-      Render_Keyboard(Keyboard);
+      -- Render_Keyboard(Keyboard);
       Render_Screen(VM.Screen);
 
       declare
@@ -155,6 +158,7 @@ begin
                      Get_Pressed_Key(Keyboard, VM.Pressed_Keys,
                                      VM.GeneralRegisters, VM.Blocked,
                                      Current_X, Current_Y);
+                     exit;
                   end if;
                end loop;
                Keyboard_Changed := True;

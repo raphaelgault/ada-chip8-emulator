@@ -29,7 +29,6 @@ package body Keyboard is
                                    16#F1F1F#, 16#E9E9E#, 16#F1F8F#, 16#F9F99#,
                                    16#26227#, 16#F9F1F#, 16#F999F#, 16#F9F9F#);
    begin
-      Keyboard := (others => False);
       for I in Keys'Range loop
          Write_Key(Keyboard, Keys(I),
                    20 * ((I / 2) * 10 + 3) + ((I mod 2) * 10) + 3);
@@ -45,7 +44,7 @@ package body Keyboard is
          if Keyboard(I) = True then
             Cur_Pos := (Keyboard_Start + ((I mod Line) * 4), (I / Line) * 4);
             Cur_Rect := (Cur_Pos, 4, 4);
-            Display.Hidden_Buffer(2).Fill_Rect(Cur_Rect);
+            Display.Hidden_Buffer(1).Fill_Rect(Cur_Rect);
          end if;
       end loop;
    end;
@@ -56,12 +55,15 @@ package body Keyboard is
       Pressed := (others => False);
    end;
 
-   procedure Update_Keyboard_Buffer(Keyboard: in out Keyboard_Buffer;
+   procedure Update_Keyboard_Buffer(Keyboard: in Keyboard_Buffer;
                                     K : in Key)
    is
       Start_X : Natural := 0;
       Start_Y : Integer := (7 - K) * 10;
       Cur_Index : Integer := 0;
+
+      Cur_Pos : Point;
+      Cur_Rect : Rect;
    begin
       if K >= 8 then
          Start_X := Start_X + 10;
@@ -70,7 +72,16 @@ package body Keyboard is
       for I in 0 .. Key_Size - 1 loop
          for J in 0 .. Key_Size - 1 loop
             Cur_Index := Start_X + I + ((Start_Y + J) * 20);
-            Keyboard(Cur_Index) := not Keyboard(Cur_Index);
+
+            if Keyboard(Cur_Index) = False then
+               Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
+            else
+               Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Black);
+            end if;
+            Cur_Pos := (Keyboard_Start + ((Cur_Index mod Line) * 4),
+                        (Cur_Index / Line) * 4);
+            Cur_Rect := (Cur_Pos, 4, 4);
+            Display.Hidden_Buffer(2).Fill_Rect(Cur_Rect);
          end loop;
       end loop;
    end;
@@ -95,6 +106,8 @@ package body Keyboard is
            Regs(Blocked) := Byte(Current_Key);
            Blocked := -1;
          end if;
+      end if;
+      if Pressed(Current_Key) = True then
          Update_Keyboard_Buffer(Keyboard, Current_key);
       end if;
    end;
