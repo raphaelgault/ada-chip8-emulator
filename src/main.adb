@@ -146,7 +146,6 @@ begin
             when 0 =>
                if Keyboard_Changed then
                   Reset_Pressed_Keys(VM.Pressed_Keys);
-                  Reset_Keyboard(Keyboard);
                   BG := HAL.Bitmap.Transparent;
                   Keyboard_Changed := False;
                end if;
