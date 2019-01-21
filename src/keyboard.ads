@@ -11,10 +11,7 @@ package Keyboard is
 
    subtype Position is Integer range 0 ..320;
 
-   -- 0 to F, handle multi press
    subtype Key is Integer range -1 .. 15;
-   type Keys is array (0 .. 15) of Boolean;
-   pragma Pack(Keys);
 
    -- scale of the keyboard is 4 pixels, size = 80 * 320
    type Keyboard_Buffer is array (0 .. 1599) of Boolean;

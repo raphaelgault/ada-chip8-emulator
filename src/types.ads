@@ -7,4 +7,10 @@ package Types is
   pragma Pack(GeneralRegs);
   type RAM is array (Addr) of Byte;
   pragma Pack(RAM);
+
+  type Pixel_Buffer is array (0 .. 2047) of Boolean;
+  pragma Pack(Pixel_Buffer);
+
+  type Keys is array (0 .. 15) of Boolean;
+  pragma Pack(Keys);
 end Types;
