@@ -11,6 +11,7 @@ package Registers is
       PC : Integer_16;
       SP : Byte;
       Blocked : Integer := -1;
+      Refresh_Screen : Boolean := False;
       -- mem : RAM := (others => 0);
       stack : LifoStack := Stack_Init;
       Screen : Pixel_Buffer := (others => False);

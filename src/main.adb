@@ -91,13 +91,15 @@ begin
    Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Transparent);
    Display.Hidden_Buffer (2).Fill;
 
+   Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
+
    Draw_Borders;
 
    -- Init keyboard
    Reset_Keyboard(Keyboard);
    Render_Keyboard(Keyboard);
 
-   Display.Update_Layer (1, Copy_Back => False);
+   Display.Update_Layer (1, Copy_Back => True);
 
    load_rom;
 
@@ -118,10 +120,6 @@ begin
 
       if VM.DT /= 0 then
          DT := VM.DT - 1;
-         -- Temporary : when the DT is substracted, it should be 0
-         -- VM.DT is modular, we do not want is to go to the higher bound
-         -- Solution : left it like this ou change Byte type.
-         -- TODO: check value 259 in condition
          if DT > 255 then
             VM.DT := 0;
          else
@@ -129,13 +127,15 @@ begin
          end if;
       end if;
 
-      Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Transparent);
-      Display.Hidden_Buffer (2).Fill;
+      if Vm.Refresh_Screen = True then
+         Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Transparent);
+         Display.Hidden_Buffer (2).Fill;
 
-      Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
+         Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
 
-      -- Render_Keyboard(Keyboard);
-      Render_Screen(VM.Screen);
+         Render_Screen(VM.Screen);
+         Display.Update_Layer (2, Copy_Back => False);
+      end if;
 
       declare
          State : constant TP_State := Touch_Panel.Get_All_Touch_Points;
@@ -148,15 +148,27 @@ begin
                   Reset_Pressed_Keys(VM.Pressed_Keys);
                   BG := HAL.Bitmap.Transparent;
                   Keyboard_Changed := False;
+                  Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Transparent);
+                  Display.Hidden_Buffer (1).Fill;
+                  Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
+                  Draw_Borders;
+                  Render_Keyboard(Keyboard);
+                  Display.Update_Layer (1, Copy_Back => True);
                end if;
             when others =>
                for Id in State'Range loop
                   Current_X := State (Id).X;
                   Current_Y := State (Id).Y;
                   if Current_X >= Keyboard_Start then
+                     Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Transparent);
+                     Display.Hidden_Buffer (1).Fill;
+                     Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
+                     Draw_Borders;
+                     Render_Keyboard(Keyboard);
                      Get_Pressed_Key(Keyboard, VM.Pressed_Keys,
                                      VM.GeneralRegisters, VM.Blocked,
                                      Current_X, Current_Y);
+                     Display.Update_Layer (1, Copy_Back => False);
                      exit;
                   end if;
                end loop;
@@ -164,7 +176,6 @@ begin
          end case;
       end;
       --  Update screen
-      Display.Update_Layer (2, Copy_Back => False);
 
    end loop;
 

@@ -23,7 +23,7 @@ package body Class_F is
       vm.I := vm.I + Addr(vm.GeneralRegisters(X));
     elsif B = 16#29# then
       --Put_Line ("LD F, Vx");
-      if vm.I +  vm.GeneralRegisters(X) > 16#FFF# then
+      if Integer(vm.I) + Integer(vm.GeneralRegisters(X)) > 16#FFF# then
          Vm.GeneralRegisters (16#F#) := 1;
       else
          Vm.GeneralRegisters (16#F#) := 0;

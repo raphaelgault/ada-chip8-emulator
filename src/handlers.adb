@@ -37,6 +37,7 @@ package body Handlers is
     if K = 16#E0# then
        -- Clear the display
        VM.Screen := (others => false);
+       Vm.Refresh_Screen := True;
     elsif K = 16#EE# then
        -- Return from subroutine
       vm.PC := Stack_Pop(vm.Stack);
@@ -220,6 +221,9 @@ package body Handlers is
            end if;
         end loop;
      end loop;
+
+     Vm.Refresh_Screen := True;
+
   end handler_D;
 
   procedure handler_E (i : in Opcode; vm : in out Registers.Registers)

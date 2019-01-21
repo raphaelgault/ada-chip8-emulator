@@ -55,7 +55,7 @@ package body Keyboard is
       Pressed := (others => False);
    end;
 
-   procedure Update_Keyboard_Buffer(Keyboard: in Keyboard_Buffer;
+   procedure Update_Keyboard_Buffer(Keyboard: in out Keyboard_Buffer;
                                     K : in Key)
    is
       Start_X : Natural := 0;
@@ -74,14 +74,15 @@ package body Keyboard is
             Cur_Index := Start_X + I + ((Start_Y + J) * 20);
 
             if Keyboard(Cur_Index) = False then
-               Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
+               Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
             else
-               Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Black);
+               Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Black);
             end if;
+
             Cur_Pos := (Keyboard_Start + ((Cur_Index mod Line) * 4),
                         (Cur_Index / Line) * 4);
             Cur_Rect := (Cur_Pos, 4, 4);
-            Display.Hidden_Buffer(2).Fill_Rect(Cur_Rect);
+            Display.Hidden_Buffer(1).Fill_Rect(Cur_Rect);
          end loop;
       end loop;
    end;
