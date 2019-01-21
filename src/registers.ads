@@ -1,9 +1,6 @@
 with Stack; use Stack;
 with Types; use Types;
 
-with Graphics; use Graphics;
-with Keyboard; use Keyboard;
-
 package Registers is
   type Registers is record
       GeneralRegisters : GeneralRegs := (others => 0);

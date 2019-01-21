@@ -6,8 +6,6 @@ with Class_Eight; use Class_Eight;
 with Class_F; use Class_F;
 with Stack; use Stack;
 
-with Graphics; use Graphics;
-
 package body Handlers is
 
   function rshift (val : opcode; num : Integer) return Opcode
