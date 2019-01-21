@@ -153,7 +153,7 @@ package body Handlers is
   begin
     X := Integer (rshift(i and 16#0F00#, 8));
     Y := Integer (rshift(i and 16#00F0#, 4));
-    if X /= Y then
+    if vm.GeneralRegisters(X) /= vm.GeneralRegisters(Y) then
       vm.PC := vm.PC + 2; -- we skip next instruction;
     end if;
   end handler_9;
@@ -171,7 +171,7 @@ package body Handlers is
     N : Integer;
   begin
     N := Integer(i and 16#0FFF#);
-    vm.PC := N + Integer(vm.GeneralRegisters(0));
+    vm.PC := N + Integer(vm.GeneralRegisters(0) - 2);
   end handler_B;
 
   procedure handler_C (i : in Opcode; vm : in out Registers.Registers)
