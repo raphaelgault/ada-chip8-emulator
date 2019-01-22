@@ -1,4 +1,59 @@
 package body Graphics is
+   procedure Init_Screen
+   is
+   begin
+      --  Initialize LCD
+      Display.Initialize;
+      Display.Initialize_Layer (1, ARGB_8888);
+      Display.Initialize_Layer (2, ARGB_8888);
+
+      --  Initialize touch panel
+      Touch_Panel.Initialize;
+
+      --  Initialize button
+      User_Button.Initialize;
+
+      LCD_Std_Out.Set_Font (BMP_Fonts.Font8x8);
+      LCD_Std_Out.Current_Background_Color := HAL.Bitmap.Black;
+
+      --  Clear LCD (set background)
+      LCD_Std_Out.Clear_Screen;
+   end;
+
+   procedure Draw_Borders
+   is
+      Pt : Point := (0, 0);
+      R : Rect;
+   begin
+      Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
+
+      -- Compute borders
+      R := (Pt, Screen_Height, Screen_Width);
+      Display.Hidden_Buffer(1).Draw_Rect(R);
+
+      -- Compute Keyboard borders 80 * 320
+      Pt := (Screen_Height, 0);
+      R := (Pt, 240 - (Screen_Height), Screen_Width);
+      Display.Hidden_Buffer(1).Draw_Rect(R);
+
+      Pt := (200, 0);
+      Display.Hidden_Buffer(1).Draw_Vertical_Line(Pt, Screen_Width);
+
+      for I in 0 .. 8 loop
+         Pt := (160, I * 40);
+         Display.Hidden_Buffer(1).Draw_Horizontal_Line(Pt, 80);
+      end loop;
+   end;
+
+   procedure Reset_Layer(Layer: Integer)
+   is
+   begin
+      Display.Hidden_Buffer (Layer).Set_Source (HAL.Bitmap.Transparent);
+      Display.Hidden_Buffer (Layer).Fill;
+
+      Display.Hidden_Buffer (Layer).Set_Source (HAL.Bitmap.White);
+   end;
+
    -- Find position in the screen according to index
    function Compute_Position(Index: Integer) return Point
    is
@@ -28,31 +83,4 @@ package body Graphics is
          end if;
       end loop;
    end;
-
-   procedure Draw_Borders
-   is
-      Pt : Point := (0, 0);
-      R : Rect;
-   begin
-      Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
-
-      -- Compute borders
-      R := (Pt, Screen_Height, Screen_Width);
-      Display.Hidden_Buffer(1).Draw_Rect(R);
-
-      -- Compute Keyboard borders 80 * 320
-      Pt := (Screen_Height, 0);
-      R := (Pt, 240 - (Screen_Height), Screen_Width);
-      Display.Hidden_Buffer(1).Draw_Rect(R);
-
-      Pt := (200, 0);
-      Display.Hidden_Buffer(1).Draw_Vertical_Line(Pt, Screen_Width);
-
-      for I in 0 .. 8 loop
-         Pt := (160, I * 40);
-         Display.Hidden_Buffer(1).Draw_Horizontal_Line(Pt, 80);
-      end loop;
-
-   end;
-
 end;

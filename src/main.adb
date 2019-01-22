@@ -34,11 +34,10 @@ with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
 --  an exception is propagated. We need it in the executable, therefore it
 --  must be somewhere in the closure of the context clauses.
 
-
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Handlers; use Handlers;
-with Graphics; use Graphics;
+with Graphics;
 with Keyboard; use Keyboard;
 with Registers; use Registers;
 with Rom; use Rom;
@@ -46,18 +45,13 @@ with Types; use Types;
 
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
-with HAL.Framebuffer;            use HAL.Framebuffer
-                                   ;
+
 pragma Warnings (Off, "referenced");
 with HAL.Touch_Panel;       use HAL.Touch_Panel;
 with STM32.User_Button;     use STM32;
-with BMP_Fonts;
-with LCD_Std_Out;
 
 procedure Main
 is
-   BG : Bitmap_Color := (Alpha => 255, others => 0);
-
    Keyboard : Keyboard_Buffer := (others => False);
    Keyboard_Changed : Boolean := False;
 
@@ -68,42 +62,22 @@ is
 
    DT : Byte;
 begin
-   --  Initialize LCD
-   Display.Initialize;
-   Display.Initialize_Layer (1, ARGB_8888);
-   Display.Initialize_Layer (2, ARGB_8888);
+   Graphics.Init_Screen;
 
-   --  Initialize touch panel
-   Touch_Panel.Initialize;
+   Graphics.Reset_Layer(1);
+   Graphics.Reset_Layer(2);
 
-   --  Initialize button
-   User_Button.Initialize;
-
-   LCD_Std_Out.Set_Font (BMP_Fonts.Font8x8);
-   LCD_Std_Out.Current_Background_Color := BG;
-
-   --  Clear LCD (set background)
-   LCD_Std_Out.Clear_Screen;
-
-   Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Transparent);
-   Display.Hidden_Buffer (1).Fill;
-
-   Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Transparent);
-   Display.Hidden_Buffer (2).Fill;
-
-   Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
-
-   Draw_Borders;
-
-   -- Init keyboard
    Reset_Keyboard(Keyboard);
+
+   Graphics.Draw_Borders;
    Render_Keyboard(Keyboard);
 
-   Display.Update_Layer (1, Copy_Back => True);
+   Display.Update_Layer (1, Copy_Back => False);
 
    load_rom(-1);
 
    VM.PC := 512;
+
    loop
       if User_Button.Has_Been_Pressed then
          null;
@@ -128,12 +102,8 @@ begin
       end if;
 
       if Vm.Refresh_Screen = True then
-         Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.Transparent);
-         Display.Hidden_Buffer (2).Fill;
-
-         Display.Hidden_Buffer (2).Set_Source (HAL.Bitmap.White);
-
-         Render_Screen(VM.Screen);
+         Graphics.Reset_Layer(2);
+         Graphics.Render_Screen(VM.Screen);
          Display.Update_Layer (2, Copy_Back => False);
       end if;
 
@@ -145,25 +115,20 @@ begin
          case State'Length is
             when 0 =>
                if Keyboard_Changed then
+                  Graphics.Reset_Layer(1);
+                  Graphics.Draw_Borders;
                   Reset_Pressed_Keys(VM.Pressed_Keys);
-                  BG := HAL.Bitmap.Transparent;
-                  Keyboard_Changed := False;
-                  Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Transparent);
-                  Display.Hidden_Buffer (1).Fill;
-                  Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
-                  Draw_Borders;
                   Render_Keyboard(Keyboard);
-                  Display.Update_Layer (1, Copy_Back => True);
+                  Display.Update_Layer (1, Copy_Back => False);
+                  Keyboard_Changed := False;
                end if;
             when others =>
                for Id in State'Range loop
                   Current_X := State (Id).X;
                   Current_Y := State (Id).Y;
                   if Current_X >= Keyboard_Start then
-                     Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.Transparent);
-                     Display.Hidden_Buffer (1).Fill;
-                     Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
-                     Draw_Borders;
+                     Graphics.Reset_Layer(1);
+                     Graphics.Draw_Borders;
                      Render_Keyboard(Keyboard);
                      Get_Pressed_Key(Keyboard, VM.Pressed_Keys,
                                      VM.GeneralRegisters, VM.Blocked,
@@ -175,7 +140,6 @@ begin
                Keyboard_Changed := True;
          end case;
       end;
-      --  Update screen
 
    end loop;
 
