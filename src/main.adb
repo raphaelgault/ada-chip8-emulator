@@ -63,7 +63,7 @@ is
 
    DT : Byte;
 
-   Rom_Number : Integer;
+   Rom_Number : Integer := -1;
 begin
    Graphics.Init_Screen;
 

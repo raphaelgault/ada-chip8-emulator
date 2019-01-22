@@ -25,20 +25,38 @@ package body Menu is
    end;
 
    function Compute_Rom_Index(X: Integer; Y : Integer) return Integer is
+      Pt : Point := (0, 0);
+      R : Rect := (Pt, 60, 60);
+
+      Hor : Integer := (Y / 50) * 50;
    begin
+      Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
       case X is
          when 0 .. 60 =>
+            Pt := (0, Hor);
+            R := (Pt, 60, 60);
+            Display.Hidden_Buffer (1).Fill_Rect(R);
             return 5 - (Y / 60);
          when 61 .. 120 =>
+            Pt := (60, Hor);
+            R := (Pt, 60, 60);
+            Display.Hidden_Buffer (1).Fill_Rect(R);
             return 11 - (Y / 60);
          when 121 .. 180 =>
+            Pt := (120, hor);
+            R := (Pt, 60, 60);
+            Display.Hidden_Buffer (1).Fill_Rect(R);
             return 17 - (Y / 60);
          when others =>
+            Pt := (180, hor);
+            R := (Pt, 60, 60);
+            Display.Hidden_Buffer (1).Fill_Rect(R);
             return 23 - (Y / 60);
       end case;
    end;
 
    function Get_Rom_Index return Integer is
+      Rom_Index : Integer := -1;
    begin
       loop
          declare
@@ -48,13 +66,18 @@ package body Menu is
          begin
             case State'Length is
                when 0 =>
-                  null;
+                  if Rom_Index /= -1 then
+                     return Rom_Index;
+                  end if;
                when others =>
-                  for Id in State'Range loop
-                     X := State(Id).X;
-                     Y := State(Id).Y;
-                     return Compute_Rom_Index(X, Y);
-                  end loop;
+                  if Rom_Index = -1 then
+                     X := State (State'First).X;
+                     Y := State (State'First).Y;
+                     if X /= 0 or Y /= 0 then
+                        Rom_Index := Compute_Rom_Index(X, Y);
+                        Display.Update_Layer (1, Copy_Back => True);
+                     end if;
+                  end if;
             end case;
          end;
       end loop;
