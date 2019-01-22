@@ -85,7 +85,7 @@ begin
    Display.Update_Layer (1, Copy_Back => True);
    Display.Update_Layer (2, Copy_Back => False);
 
-   load_rom(-1);
+   load_rom(Rom_Number);
 
    VM.PC := 512;
 

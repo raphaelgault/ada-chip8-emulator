@@ -38,7 +38,7 @@ package body Registers is
      B : Unsigned_64;
      E : Opcode;
      J : Integer := 0;
-     Instr: Code := Get_Rom_Code(index);
+     Instr: CodeAccess := Get_Rom_Code(index);
 --type Code is array (Integer range <>) of Opcode;
 
   begin
@@ -53,34 +53,34 @@ package body Registers is
      end loop;
   end load_rom;
 
-  function Get_Rom_Code (index: Integer) return Code is
+  function Get_Rom_Code (index: Integer) return CodeAccess is
   begin
        case index is
-           when 0 => return ROM_15PUZZLE;
-           when 1 => return ROM_BLINKY;
-           when 2 => return ROM_BLITZ;
-           when 3 => return ROM_BRIX;
-           when 4 => return ROM_CONNECT4;
-           when 5 => return ROM_GUESS;
-           when 6 => return ROM_HIDDEN;
-           when 7 => return ROM_IBM;
-           when 8 => return ROM_INVADERS;
-           when 9 => return ROM_KALEID;
-           when 10 =>return ROM_MAZE;
-           when 11 =>return ROM_MERLIN;
-           when 12 =>return ROM_MISSILE;
-           when 13 =>return ROM_PONG;
-           when 14 =>return ROM_PONG2;
-           when 15 =>return ROM_PUZZLE;
-           when 16 =>return ROM_SYZYGY;
-           when 17 =>return ROM_TANK;
-           when 18 =>return ROM_TETRIS;
-           when 19 =>return ROM_TICTAC;
-           when 20 =>return ROM_UFO;
-           when 21 =>return ROM_VBRIX;
-           when 22 =>return ROM_VERS;
-           when 23 =>return ROM_WIPEOFF;
-           when others => return ROM_PONG;
+           when 0 => return ROM_15PUZZLE'Access;
+           when 1 => return ROM_BLINKY'Access;
+           when 2 => return ROM_BLITZ'Access;
+           when 3 => return ROM_BRIX'Access;
+           when 4 => return ROM_CONNECT4'Access;
+           when 5 => return ROM_GUESS'Access;
+           when 6 => return ROM_HIDDEN'Access;
+           when 7 => return ROM_IBM'Access;
+           when 8 => return ROM_INVADERS'Access;
+           when 9 => return ROM_KALEID'Access;
+           when 10 =>return ROM_MAZE'Access;
+           when 11 =>return ROM_MERLIN'Access;
+           when 12 =>return ROM_MISSILE'Access;
+           when 13 =>return ROM_PONG'Access;
+           when 14 =>return ROM_PONG2'Access;
+           when 15 =>return ROM_PUZZLE'Access;
+           when 16 =>return ROM_SYZYGY'Access;
+           when 17 =>return ROM_TANK'Access;
+           when 18 =>return ROM_TETRIS'Access;
+           when 19 =>return ROM_TICTAC'Access;
+           when 20 =>return ROM_UFO'Access;
+           when 21 =>return ROM_VBRIX'Access;
+           when 22 =>return ROM_VERS'Access;
+           when 23 =>return ROM_WIPEOFF'Access;
+           when others => return ROM_PONG'Access;
        end case;
   end Get_Rom_Code;
 end Registers;

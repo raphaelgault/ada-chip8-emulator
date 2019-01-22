@@ -38,6 +38,7 @@ package Registers is
   pragma Pack(Registers);
   procedure dump_state(vm :Registers);
   procedure load_rom(index: Integer);
-  function Get_Rom_Code (index: Integer) return Code;
+  type CodeAccess is access constant Code;
+  function Get_Rom_Code (index: Integer) return CodeAccess;
   --function Get_Pressed_Key(keyboard: Keys) return Integer;
 end Registers;

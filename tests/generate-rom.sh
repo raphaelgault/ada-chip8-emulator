@@ -17,7 +17,7 @@ for i in $@; do
   instr="$instr\n"
 done;
 
-echo "  $name: constant Code := (" >> src/rom.ads
+echo "  $name: aliased constant Code := (" >> src/rom.ads
 printf "${instr::-4}" >> src/rom.ads
 
 echo " );" >> src/rom.ads
