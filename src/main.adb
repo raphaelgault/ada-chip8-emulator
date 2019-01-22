@@ -39,6 +39,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Handlers; use Handlers;
 with Graphics;
 with Keyboard; use Keyboard;
+with Menu;
 with Registers; use Registers;
 with Rom; use Rom;
 with Types; use Types;
@@ -61,18 +62,28 @@ is
    I : Opcode;
 
    DT : Byte;
+
+   Rom_Number : Integer;
 begin
    Graphics.Init_Screen;
 
    Graphics.Reset_Layer(1);
    Graphics.Reset_Layer(2);
 
-   Reset_Keyboard(Keyboard);
+   Menu.Draw;
+   Display.Update_Layer (1, Copy_Back => True);
+   Display.Update_Layer (2, Copy_Back => False);
+
+   Rom_Number := Menu.Get_Rom_Index;
+
+   Graphics.Reset_Layer(1);
+   Graphics.Reset_Layer(2);
 
    Graphics.Draw_Borders;
+   Reset_Keyboard(Keyboard);
    Render_Keyboard(Keyboard);
-
-   Display.Update_Layer (1, Copy_Back => False);
+   Display.Update_Layer (1, Copy_Back => True);
+   Display.Update_Layer (2, Copy_Back => False);
 
    load_rom(-1);
 
