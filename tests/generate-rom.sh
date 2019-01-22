@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo "with Types; use Types;" > src/rom.ads
-echo "package Rom is" >> src/rom.ads
+name=$1
+shift
 
 nb=0
 instr=""
@@ -17,9 +17,7 @@ for i in $@; do
   instr="$instr\n"
 done;
 
-echo "type Code is array (0 .. $((nb - 1))) of Opcode;" >> src/rom.ads
-echo "  instructions: Code := (" >> src/rom.ads
+echo "  $name: constant Code := (" >> src/rom.ads
 printf "${instr::-4}" >> src/rom.ads
 
 echo " );" >> src/rom.ads
-echo "end Rom;" >> src/rom.ads

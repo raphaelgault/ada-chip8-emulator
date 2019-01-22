@@ -1,5 +1,6 @@
 with Stack; use Stack;
 with Types; use Types;
+with Rom; use Rom;
 
 package Registers is
   type Registers is record
@@ -36,6 +37,7 @@ package Registers is
                others => 0);
   pragma Pack(Registers);
   procedure dump_state(vm :Registers);
-  procedure load_rom;
+  procedure load_rom(index: Integer);
+  function Get_Rom_Code (index: Integer) return Code;
   --function Get_Pressed_Key(keyboard: Keys) return Integer;
 end Registers;

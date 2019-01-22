@@ -33,30 +33,54 @@ package body Registers is
     Put_Line ("============================================");
   end dump_state;
 
-  procedure load_rom is
+  procedure load_rom (index: Integer) is
      N : Opcode;
      B : Unsigned_64;
      E : Opcode;
+     J : Integer := 0;
+     Instr: Code := Get_Rom_Code(index);
+--type Code is array (Integer range <>) of Opcode;
+
   begin
-     for I in instructions'Range loop
+     for I in Instr'Range loop
        --Put_Line ("Instruction #" & I'Image);
-       N := instructions(I);
+       N := Instr(I);
        B := Shift_Right(Unsigned_64(N), 8);
        E := N and 16#00FF#;
-       mem(512 + 2 * Integer(I)) := Byte(B);
-       mem(512 + 2 * Integer(I) + 1) := Byte(E);
+       mem(512 + 2 * J) := Byte(B);
+       mem(512 + 2 * J + 1) := Byte(E);
+       J := J + 1;
      end loop;
   end load_rom;
-  
---  function Get_Pressed_Key(keyboard: Keys) return Integer
---  is
---  begin
---    loop
---      for I in keyboard'Range loop
---        if keyboard(I) then
---          return I;
---        end if;
---      end loop;
---    end loop;
---  end Get_Pressed_Key;
+
+  function Get_Rom_Code (index: Integer) return Code is
+  begin
+       case index is
+           when 0 => return ROM_15PUZZLE;
+           when 1 => return ROM_BLINKY;
+           when 2 => return ROM_BLITZ;
+           when 3 => return ROM_BRIX;
+           when 4 => return ROM_CONNECT4;
+           when 5 => return ROM_GUESS;
+           when 6 => return ROM_HIDDEN;
+           when 7 => return ROM_IBM;
+           when 8 => return ROM_INVADERS;
+           when 9 => return ROM_KALEID;
+           when 10 =>return ROM_MAZE;
+           when 11 =>return ROM_MERLIN;
+           when 12 =>return ROM_MISSILE;
+           when 13 =>return ROM_PONG;
+           when 14 =>return ROM_PONG2;
+           when 15 =>return ROM_PUZZLE;
+           when 16 =>return ROM_SYZYGY;
+           when 17 =>return ROM_TANK;
+           when 18 =>return ROM_TETRIS;
+           when 19 =>return ROM_TICTAC;
+           when 20 =>return ROM_UFO;
+           when 21 =>return ROM_VBRIX;
+           when 22 =>return ROM_VERS;
+           when 23 =>return ROM_WIPEOFF;
+           when others => return ROM_PONG;
+       end case;
+  end Get_Rom_Code;
 end Registers;
