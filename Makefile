@@ -16,8 +16,8 @@ debug:
 	gprbuild -P $(ENTRY_POINT) -Xmode=debug
 	$(OBJCOPY) -O binary $(DEBUGDIR)/$(ELF) $(BIN)
 
-generate-rom:
-	./tests/generate-rom.sh $(shell xxd -p ${ROM})
+generate-roms:
+	./tests/generate-roms.sh
 
 flash:
 	st-flash --reset write $(BIN) 0x08000000
