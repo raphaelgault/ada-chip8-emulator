@@ -63,10 +63,6 @@ package body Handlers is
   begin
     N := Integer(i and 16#0FFF#);
     B := Stack.Stack_Push(vm.Stack, vm.PC);
-    if not B then
-      --Put_Line ("Error while pushing value of PC on the stack");
-      null;
-    end if;
     vm.PC := N - 2;
   end handler_2;
 

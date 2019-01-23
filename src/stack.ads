@@ -10,7 +10,16 @@ package Stack is
   end record;
   pragma Pack(LifoStack);
   function Stack_Init return LifoStack;
-  function Stack_Push (s : in out LifoStack; elt : Types.Integer_16) return Boolean;
-  function Stack_Pop (s : in out LifoStack) return Types.Integer_16;
-  function Stack_Top (s : in LifoStack) return Types.Integer_16;
+  function Stack_Push (s : in out LifoStack; elt : Types.Integer_16) return Boolean
+      with Pre => s.Size < Stack_Max_Size,
+        Post => s.Size'Old >= s.Size
+        and then s.Size <= Stack_Max_Size;
+  function Stack_Pop (s : in out LifoStack) return Types.Integer_16
+      with Pre => s.Size > 0,
+        Post => s.Size'Old <= s.Size
+        and then s.Size >= 0;
+  function Stack_Top (s : in LifoStack) return Types.Integer_16
+      with Pre => s.Size > 0,
+        Post => s.Size'Old = s.Size;
+
 end Stack;

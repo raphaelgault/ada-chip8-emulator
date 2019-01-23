@@ -8,7 +8,6 @@ package body Class_F is
   procedure LD (i : Opcode ; x : Integer; vm : in out Registers.Registers)
   is
     B : Byte;
-    N : Integer;
   begin
     B := Byte(i and 16#00FF#);
     if B = 16#07# then
