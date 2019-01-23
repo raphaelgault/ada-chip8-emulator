@@ -20,6 +20,6 @@ package Stack is
         and then s.Size >= 0;
   function Stack_Top (s : in LifoStack) return Types.Integer_16
       with Pre => s.Size > 0,
-        Post => s.Size'Old = s.Size;
+        Post => Stack_Top'Result = s.IntData(s.Size);
 
 end Stack;

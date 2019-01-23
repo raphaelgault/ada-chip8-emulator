@@ -28,9 +28,6 @@ package body Stack is
   function Stack_Top (s : in LifoStack) return Integer_16 is
     elt : Integer_16;
   begin
-    if s.Size < 1 then
-      return -1;
-    end if;
     elt := s.IntData(s.Size);
     return elt;
   end;
