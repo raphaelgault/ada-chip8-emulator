@@ -46,6 +46,7 @@ with Types; use Types;
 
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
+with Hal.Framebuffer;       use Hal.Framebuffer;
 
 pragma Warnings (Off, "referenced");
 with HAL.Touch_Panel;       use HAL.Touch_Panel;
@@ -92,7 +93,6 @@ begin
    loop
       if User_Button.Has_Been_Pressed then
          null;
-         -- Will display the menu
       end if;
 
       if VM.Blocked = -1 then

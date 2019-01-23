@@ -28,28 +28,27 @@ package body Menu is
       Pt : Point := (0, 0);
       R : Rect := (Pt, 60, 60);
 
-      Hor : Integer := (Y / 50) * 50;
+      Width : Integer := Display.Hidden_Buffer (1).Width / 4;
+      Height : Integer := Display.Hidden_Buffer (1).Height / 6;
+
+      Round_Y : Integer := (Y / Height) * height;
    begin
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
       case X is
          when 0 .. 60 =>
-            Pt := (0, Hor);
-            R := (Pt, 60, 60);
+            R := ((0, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
             return 5 - (Y / 60);
          when 61 .. 120 =>
-            Pt := (60, Hor);
-            R := (Pt, 60, 60);
+            R := ((60, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
             return 11 - (Y / 60);
          when 121 .. 180 =>
-            Pt := (120, hor);
-            R := (Pt, 60, 60);
+            R := ((120, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
             return 17 - (Y / 60);
          when others =>
-            Pt := (180, hor);
-            R := (Pt, 60, 60);
+            R := ((180, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
             return 23 - (Y / 60);
       end case;
