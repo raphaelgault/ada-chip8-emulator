@@ -28,26 +28,34 @@ package Handlers is
 
   procedure handler_7 (i : in Opcode; vm : in out Registers.Registers);
 
-  procedure handler_8 (i : in Opcode; vm : in out Registers.Registers);
+  procedure handler_8 (i : in Opcode; vm : in out Registers.Registers)
+    with Pre => (I and 16#F#) < 8 or (I and 16#F#) = 14;
 
   procedure handler_9 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
-  procedure handler_A (i : in Opcode; vm : in out Registers.Registers);
+
+  procedure handler_A (i : in Opcode; vm : in out Registers.Registers)
+    with Post => VM.I >= 0 and then VM.I <= 16#FF#;
 
   procedure handler_B (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
   procedure handler_C (i : in Opcode; vm : in out Registers.Registers);
 
-  procedure handler_D (i : in Opcode; vm : in out Registers.Registers) with
-    Pre => VM. Refresh_Screen = False,
-    Post => VM.Refresh_Screen = True;
-  procedure handler_E (i : in Opcode; vm : in out Registers.Registers);
+  procedure handler_D (i : in Opcode; vm : in out Registers.Registers)
+    with Pre => VM. Refresh_Screen = False,
+         Post => VM.Refresh_Screen = True;
 
-  procedure handler_F (i : in Opcode; vm : in out Registers.Registers);
+  procedure handler_E (i : in Opcode; vm : in out Registers.Registers)
+    with Pre => (I and 16#FF#) in 16#9E# | 16#A1#,
+         Post => VM.PC >= 512 and then VM.PC <= 16#FF#;
+
+  procedure handler_F (i : in Opcode; vm : in out Registers.Registers)
+    with Post => VM.I >= 0 and VM.I <= 16#FF#;
 
   type Class_Handler is access procedure (i : in Opcode;
                                           vm : in out Registers.Registers);
+
   type Instr_Classes is array (0 .. 15) of Class_Handler;
 
   Handler_Table : Instr_Classes := (handler_0'Access, handler_1'Access,

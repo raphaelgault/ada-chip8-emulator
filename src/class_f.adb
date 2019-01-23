@@ -18,8 +18,6 @@ package body Class_F is
       vm.DT := vm.GeneralRegisters(X);
     elsif B = 16#18# then
       vm.ST := vm.GeneralRegisters(X);
-    elsif B = 16#1E# then
-      vm.I := vm.I + Addr(vm.GeneralRegisters(X));
     elsif B = 16#29# then
       if Integer(vm.I) + Integer(vm.GeneralRegisters(X)) > 16#FFF# then
          Vm.GeneralRegisters (16#F#) := 1;

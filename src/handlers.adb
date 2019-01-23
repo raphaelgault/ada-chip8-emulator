@@ -234,9 +234,6 @@ package body Handlers is
       Class_E.SKP(X, vm);
     elsif E = 16#A1# then
       Class_E.SKNP(X, vm);
-    else
-      --Put_Line ("Unknown Instruction with opcode " & E'Image & " - " & Integer(I)'Image);
-      null;
     end if;
 
   end handler_E;
