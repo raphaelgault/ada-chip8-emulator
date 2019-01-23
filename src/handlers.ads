@@ -5,29 +5,45 @@ with Stack; use Stack;
 package Handlers is
   function rshift(val : opcode; num : Integer) return Opcode;
   function lshift(val : opcode; num : Integer) return Opcode;
+
   procedure handler_0 (i : in Opcode; vm : in out Registers.Registers);
+
   procedure handler_1 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
+
   procedure handler_2 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
+
   procedure handler_3 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
+
   procedure handler_4 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
+
   procedure handler_5 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
+
   procedure handler_6 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.GeneralRegisters(Integer(rshift(i and 16#0F00#, 8))) = Byte(i and 16#00FF#);
+
   procedure handler_7 (i : in Opcode; vm : in out Registers.Registers);
+
   procedure handler_8 (i : in Opcode; vm : in out Registers.Registers);
+
   procedure handler_9 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
   procedure handler_A (i : in Opcode; vm : in out Registers.Registers);
+
   procedure handler_B (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
+
   procedure handler_C (i : in Opcode; vm : in out Registers.Registers);
-  procedure handler_D (i : in Opcode; vm : in out Registers.Registers);
+
+  procedure handler_D (i : in Opcode; vm : in out Registers.Registers) with
+    Pre => VM. Refresh_Screen = False,
+    Post => VM.Refresh_Screen = True;
   procedure handler_E (i : in Opcode; vm : in out Registers.Registers);
+
   procedure handler_F (i : in Opcode; vm : in out Registers.Registers);
 
   type Class_Handler is access procedure (i : in Opcode;
