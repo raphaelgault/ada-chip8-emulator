@@ -1,4 +1,9 @@
 package body Graphics is
+
+   -----------------
+   -- Init_Screen --
+   -----------------
+
    procedure Init_Screen
    is
    begin
@@ -19,6 +24,10 @@ package body Graphics is
       --  Clear LCD (set background)
       LCD_Std_Out.Clear_Screen;
    end;
+
+   ------------------
+   -- Draw_borders --
+   ------------------
 
    procedure Draw_Borders
    is
@@ -45,6 +54,10 @@ package body Graphics is
       end loop;
    end;
 
+   -----------------
+   -- Reset_Layer --
+   -----------------
+
    procedure Reset_Layer(Layer: Integer)
    is
    begin
@@ -53,6 +66,10 @@ package body Graphics is
 
       Display.Hidden_Buffer (Layer).Set_Source (HAL.Bitmap.White);
    end;
+
+   ----------------------
+   -- Compute_Position --
+   ----------------------
 
    -- Find position in the screen according to index
    function Compute_Position(Index: Integer) return Point
@@ -63,11 +80,20 @@ package body Graphics is
       return Position;
    end;
 
+   ------------------
+   -- Clear_screen --
+   ------------------
+
    procedure Clear_Screen(Screen : in out Pixel_Buffer)
    is
    begin
       Screen := (others => False);
    end;
+
+
+   -------------------
+   -- Render_screen --
+   -------------------
 
    -- Write the buffer
    procedure Render_Screen(Screen: in out Pixel_Buffer)
@@ -83,4 +109,5 @@ package body Graphics is
          end if;
       end loop;
    end;
+
 end;

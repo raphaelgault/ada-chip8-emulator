@@ -1,12 +1,13 @@
-with Stack; use Stack;
-with Types; use Types;
-with Registers; use Registers;
-with Rom; use Rom;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces; use Interfaces;
 
 package body Registers is
-  procedure dump_state(vm :Registers) is
+
+  ----------------
+  -- Dump_State --
+  ----------------
+
+  procedure Dump_State(vm :Registers) is
   begin
     Put_Line ("============================================");
     Put_Line ("v0: " & Integer(vm.GeneralRegisters(0))'Image &
@@ -31,19 +32,20 @@ package body Registers is
     Put_Line ("PC: " & Integer(vm.PC)'Image);
     Put_Line ("stack top : " & Integer(Stack_Top(vm.stack))'Image);
     Put_Line ("============================================");
-  end dump_state;
+  end Dump_State;
 
-  procedure load_rom (index: Integer) is
+  --------------
+  -- Load_Rom --
+  --------------
+
+  procedure Load_Rom (index: Integer) is
      N : Opcode;
      B : Unsigned_64;
      E : Opcode;
      J : Integer := 0;
      Instr: CodeAccess := Get_Rom_Code(index);
---type Code is array (Integer range <>) of Opcode;
-
   begin
      for I in Instr'Range loop
-       --Put_Line ("Instruction #" & I'Image);
        N := Instr(I);
        B := Shift_Right(Unsigned_64(N), 8);
        E := N and 16#00FF#;
@@ -51,7 +53,11 @@ package body Registers is
        mem(512 + 2 * J + 1) := Byte(E);
        J := J + 1;
      end loop;
-  end load_rom;
+  end Load_Rom;
+
+  ------------------
+  -- Get_Rom_Code --
+  ------------------
 
   function Get_Rom_Code (index: Integer) return CodeAccess is
   begin
@@ -83,4 +89,5 @@ package body Registers is
            when others => return ROM_PONG'Access;
        end case;
   end Get_Rom_Code;
+
 end Registers;

@@ -81,7 +81,7 @@ begin
    Graphics.Reset_Layer(2);
 
    Graphics.Draw_Borders;
-   Reset_Keyboard(Keyboard);
+   Init_Keyboard(Keyboard);
    Render_Keyboard(Keyboard);
    Display.Update_Layer (1, Copy_Back => True);
    Display.Update_Layer (2, Copy_Back => False);

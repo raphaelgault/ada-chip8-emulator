@@ -6,6 +6,9 @@ with HAL.Touch_Panel;       use HAL.Touch_Panel;
 with Graphics; use Graphics;
 
 package Menu is
+
    procedure Draw;
+
    function Get_Rom_Index return Integer;
+
 end Menu;

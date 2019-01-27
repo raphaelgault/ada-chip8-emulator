@@ -15,10 +15,13 @@ package Graphics is
    Screen_Width : constant Integer := 64 * Pixel_Size;
 
    procedure Init_Screen;
+
    procedure Draw_Borders;
+
    procedure Reset_Layer(Layer: Integer);
 
    procedure Render_Screen(Screen: in out Pixel_Buffer);
+
    procedure Clear_Screen(Screen : in out Pixel_Buffer);
 
 end Graphics;

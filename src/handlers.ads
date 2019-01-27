@@ -1,56 +1,64 @@
+with Ada.Numerics.Discrete_Random;
+
 with Types; use Types;
 with Registers; use Registers;
 with Stack; use Stack;
 
+with Class_E; use Class_E;
+with Class_Eight; use Class_Eight;
+with Class_F; use Class_F;
+
 package Handlers is
+
   function rshift(val : opcode; num : Integer) return Opcode;
+
   function lshift(val : opcode; num : Integer) return Opcode;
 
-  procedure handler_0 (i : in Opcode; vm : in out Registers.Registers);
+  procedure Handler_0 (i : in Opcode; vm : in out Registers.Registers);
 
-  procedure handler_1 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_1 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure handler_2 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_2 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure handler_3 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_3 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure handler_4 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_4 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure handler_5 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_5 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure handler_6 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_6 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.GeneralRegisters(Integer(rshift(i and 16#0F00#, 8))) = Byte(i and 16#00FF#);
 
-  procedure handler_7 (i : in Opcode; vm : in out Registers.Registers);
+  procedure Handler_7 (i : in Opcode; vm : in out Registers.Registers);
 
-  procedure handler_8 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_8 (i : in Opcode; vm : in out Registers.Registers)
     with Pre => (I and 16#F#) < 8 or (I and 16#F#) = 14;
 
-  procedure handler_9 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_9 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure handler_A (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_A (i : in Opcode; vm : in out Registers.Registers)
     with Post => VM.I >= 0 and then VM.I <= 16#FF#;
 
-  procedure handler_B (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_B (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure handler_C (i : in Opcode; vm : in out Registers.Registers);
+  procedure Handler_C (i : in Opcode; vm : in out Registers.Registers);
 
-  procedure handler_D (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_D (i : in Opcode; vm : in out Registers.Registers)
     with Pre => VM. Refresh_Screen = False,
-         Post => VM.Refresh_Screen = True;
+    Post => VM.Refresh_Screen = True;
 
-  procedure handler_E (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_E (i : in Opcode; vm : in out Registers.Registers)
     with Pre => (I and 16#FF#) in 16#9E# | 16#A1#,
-         Post => VM.PC >= 512 and then VM.PC <= 16#FF#;
+    Post => VM.PC >= 512 and then VM.PC <= 16#FF#;
 
-  procedure handler_F (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_F (i : in Opcode; vm : in out Registers.Registers)
     with Post => VM.I >= 0 and VM.I <= 16#FF#;
 
   type Class_Handler is access procedure (i : in Opcode;
@@ -58,12 +66,12 @@ package Handlers is
 
   type Instr_Classes is array (0 .. 15) of Class_Handler;
 
-  Handler_Table : Instr_Classes := (handler_0'Access, handler_1'Access,
-                                    handler_2'Access, handler_3'Access,
-                                    handler_4'Access, handler_5'Access,
-                                    handler_6'Access, handler_7'Access,
-                                    handler_8'Access, handler_9'Access,
-                                    handler_A'Access, handler_B'Access,
-                                    handler_C'Access, handler_D'Access,
-                                    handler_E'Access, handler_F'Access);
+  Handler_Table : Instr_Classes := (Handler_0'Access, Handler_1'Access,
+                                    Handler_2'Access, Handler_3'Access,
+                                    Handler_4'Access, Handler_5'Access,
+                                    Handler_6'Access, Handler_7'Access,
+                                    Handler_8'Access, Handler_9'Access,
+                                    Handler_A'Access, Handler_B'Access,
+                                    Handler_C'Access, Handler_D'Access,
+                                    Handler_E'Access, Handler_F'Access);
 end Handlers;

@@ -1,12 +1,8 @@
-with Ada.Numerics.Discrete_Random;
-with Ada.Text_IO; use Ada.Text_IO;
-
-with Class_E; use Class_E;
-with Class_Eight; use Class_Eight;
-with Class_F; use Class_F;
-with Stack; use Stack;
-
 package body Handlers is
+
+  ------------
+  -- rshift --
+  ------------
 
   function rshift (val : opcode; num : Integer) return Opcode
   is
@@ -18,6 +14,10 @@ package body Handlers is
     return v;
   end;
 
+  ------------
+  -- lshift --
+  ------------
+
   function lshift (val : opcode; num : Integer) return Opcode
   is
     v : Opcode := val;
@@ -28,35 +28,47 @@ package body Handlers is
     return v;
   end;
 
-  procedure handler_0 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_0 --
+  ---------------
+
+  procedure Handler_0 (i : in Opcode; vm : in out Registers.Registers)
   is
     A : Addr;
     K : Byte;
   begin
     K := Byte(i and 16#FF#);
     if K = 16#E0# then
-       -- Clear the display
-       VM.Screen := (others => false);
-       Vm.Refresh_Screen := True;
+      -- Clear the display
+      VM.Screen := (others => false);
+      Vm.Refresh_Screen := True;
     elsif K = 16#EE# then
-       -- Return from subroutine
+      -- Return from subroutine
       vm.PC := Stack_Pop(vm.Stack);
     else
-       -- Jump to addr - Ignored by interpreter?
-       A := Addr(i and 16#0FFF#);
-       -- TODO
+      -- Jump to addr - Ignored by interpreter?
+      A := Addr(i and 16#0FFF#);
+      null;
     end if;
-  end handler_0;
+  end Handler_0;
 
-  procedure handler_1 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_1 --
+  ---------------
+
+  procedure Handler_1 (i : in Opcode; vm : in out Registers.Registers)
   is -- JP addr
     N : Integer;
   begin
     N := Integer(i and 16#0FFF#);
     vm.PC := N - 2;
-  end handler_1;
+  end Handler_1;
 
-  procedure handler_2 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_2 --
+  ---------------
+
+  procedure Handler_2 (i : in Opcode; vm : in out Registers.Registers)
   is
     N : Integer;
     B : Boolean;
@@ -64,9 +76,13 @@ package body Handlers is
     N := Integer(i and 16#0FFF#);
     B := Stack.Stack_Push(vm.Stack, vm.PC);
     vm.PC := N - 2;
-  end handler_2;
+  end Handler_2;
 
-  procedure handler_3 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_4 --
+  ---------------
+
+  procedure Handler_3 (i : in Opcode; vm : in out Registers.Registers)
   is
     X : Integer;
     K : Opcode;
@@ -76,9 +92,13 @@ package body Handlers is
     if vm.GeneralRegisters(X) = Byte(K) then
       vm.PC := vm.PC + 2;
     end if;
-  end handler_3;
+  end Handler_3;
 
-  procedure handler_4 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_4 --
+  ---------------
+
+  procedure Handler_4 (i : in Opcode; vm : in out Registers.Registers)
   is
     X : Integer;
     K : Byte;
@@ -88,9 +108,13 @@ package body Handlers is
     if vm.GeneralRegisters(X) /= K then
       vm.PC := vm.PC + 2;
     end if;
-  end handler_4;
+  end Handler_4;
 
-  procedure handler_5 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_5 --
+  ---------------
+
+  procedure Handler_5 (i : in Opcode; vm : in out Registers.Registers)
   is -- SE Vx, Vy
     X : Integer;
     Y : Integer;
@@ -100,9 +124,13 @@ package body Handlers is
     if vm.GeneralRegisters(X) = vm.GeneralRegisters(Y) then
       vm.PC := vm.PC + 2;
     end if;
-  end handler_5;
+  end Handler_5;
 
-  procedure handler_6 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_6 --
+  ---------------
+
+  procedure Handler_6 (i : in Opcode; vm : in out Registers.Registers)
   is -- LD Vx, kk
     X : Integer;
     K : Byte;
@@ -110,9 +138,13 @@ package body Handlers is
     X := Integer(rshift(i and 16#0F00#, 8));
     K := Byte(i and 16#FF#);
     vm.GeneralRegisters(X) := K;
-  end handler_6;
+  end Handler_6;
 
-  procedure handler_7 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_7 --
+  ---------------
+
+  procedure Handler_7 (i : in Opcode; vm : in out Registers.Registers)
   is -- ADD Vx, byte
     X : Integer;
     K : Opcode;
@@ -120,9 +152,13 @@ package body Handlers is
     X := Integer(rshift(i and 16#0F00#, 8));
     K := i and 16#00FF#;
     vm.GeneralRegisters(X) := vm.GeneralRegisters(X) + Byte(K);
-  end handler_7;
+  end Handler_7;
 
-  procedure handler_8 (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_8 --
+  ---------------
+
+  procedure Handler_8 (i : in Opcode; vm : in out Registers.Registers)
   is
     E : Integer;
     X : Integer;
@@ -136,14 +172,14 @@ package body Handlers is
       Class_Eight.Instr_Table(E).all(X, Y, vm);
     elsif E = 14 then
       Class_Eight.Instr_Table(8).all(X, Y, vm);
-    else
-      --Put_Line ("Unknown Instruction with opcode " & Integer(I)'Image);
-      null;
     end if;
+  end Handler_8;
 
-  end handler_8;
+  ---------------
+  -- Handler_9 --
+  ---------------
 
-  procedure handler_9 (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_9 (i : in Opcode; vm : in out Registers.Registers)
   is -- 9xy0 - SNE Vx, Vy
     X : Integer;
     Y : Integer;
@@ -153,25 +189,37 @@ package body Handlers is
     if vm.GeneralRegisters(X) /= vm.GeneralRegisters(Y) then
       vm.PC := vm.PC + 2; -- we skip next instruction;
     end if;
-  end handler_9;
+  end Handler_9;
 
-  procedure handler_A (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_A --
+  ---------------
+
+  procedure Handler_A (i : in Opcode; vm : in out Registers.Registers)
   is
     N : Integer;
   begin
     N := Integer(i and 16#0FFF#);
     vm.I := N;
-  end handler_A;
+  end Handler_A;
 
-  procedure handler_B (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_B --
+  ---------------
+
+  procedure Handler_B (i : in Opcode; vm : in out Registers.Registers)
   is -- JP V0, addr
     N : Integer;
   begin
     N := Integer(i and 16#0FFF#);
     vm.PC := N + Integer(vm.GeneralRegisters(0) - 2);
-  end handler_B;
+  end Handler_B;
 
-  procedure handler_C (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_C --
+  ---------------
+
+  procedure Handler_C (i : in Opcode; vm : in out Registers.Registers)
   is
     package Random_Byte is new Ada.Numerics.Discrete_Random (Byte);
     use Random_Byte;
@@ -185,44 +233,50 @@ package body Handlers is
     K := Byte(i and 16#00FF#);
     B := Random(G);
     vm.GeneralRegisters(X) := K and B;
-  end handler_C;
+  end Handler_C;
 
-  -- TODO: Check function
-  procedure handler_D (i : in Opcode; vm : in out Registers.Registers)
+  ---------------
+  -- Handler_D --
+  ---------------
+
+  procedure Handler_D (i : in Opcode; vm : in out Registers.Registers)
   is
-     X : Integer;
-     Y : Integer;
-     Nibble : Integer;
-     Line_Value : Byte;
-     Pixel : Opcode;
-     Screen_Pos : Integer;
+    X : Integer;
+    Y : Integer;
+    Nibble : Integer;
+    Line_Value : Byte;
+    Pixel : Opcode;
+    Screen_Pos : Integer;
 
   begin
-     X := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#0F00#, 8))));
-     Y := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#00F0#, 4))));
-     Nibble := Integer(I and 16#000F#);
+    X := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#0F00#, 8))));
+    Y := Integer(VM.GeneralRegisters(Integer(Rshift(I and 16#00F0#, 4))));
+    Nibble := Integer(I and 16#000F#);
 
-     Vm.GeneralRegisters(15) := 0;
+    Vm.GeneralRegisters(15) := 0;
 
-     for Line in 0 .. Nibble - 1 loop
-        Line_Value := Mem(Vm.I + Line);
-        for Xpos in 0 .. 7 loop
-           Pixel := Opcode(Line_Value) and Rshift(2#10000000#, Xpos);
-           if Pixel /= 0 then
-              Screen_Pos := ((X + Xpos) mod 64) + ((Y + Line) mod 32) * 64;
-              Vm.Screen(Screen_Pos) := Vm.Screen(Screen_Pos) xor True;
-              if Vm.Screen(Screen_Pos) = False then
-                 Vm.GeneralRegisters(15) := 1;
-              end if;
-           end if;
-        end loop;
-     end loop;
+    for Line in 0 .. Nibble - 1 loop
+      Line_Value := Mem(Vm.I + Line);
+      for Xpos in 0 .. 7 loop
+        Pixel := Opcode(Line_Value) and Rshift(2#10000000#, Xpos);
+        if Pixel /= 0 then
+          Screen_Pos := ((X + Xpos) mod 64) + ((Y + Line) mod 32) * 64;
+          Vm.Screen(Screen_Pos) := Vm.Screen(Screen_Pos) xor True;
+          if Vm.Screen(Screen_Pos) = False then
+            Vm.GeneralRegisters(15) := 1;
+          end if;
+        end if;
+      end loop;
+    end loop;
 
-     Vm.Refresh_Screen := True;
+    Vm.Refresh_Screen := True;
+  end Handler_D;
 
-  end handler_D;
+  ---------------
+  -- Handler_E --
+  ---------------
 
-  procedure handler_E (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_E (i : in Opcode; vm : in out Registers.Registers)
   is
     X : Integer;
     E : Integer;
@@ -235,10 +289,13 @@ package body Handlers is
     elsif E = 16#A1# then
       Class_E.SKNP(X, vm);
     end if;
+  end Handler_E;
 
-  end handler_E;
+  ---------------
+  -- Handler_F --
+  ---------------
 
-  procedure handler_F (i : in Opcode; vm : in out Registers.Registers)
+  procedure Handler_F (i : in Opcode; vm : in out Registers.Registers)
   is
     X : Integer;
     E : Integer;
@@ -251,6 +308,6 @@ package body Handlers is
     else
       Class_F.LD(i, X, vm);
     end if;
-  end handler_F;
+  end Handler_F;
 
 end Handlers;

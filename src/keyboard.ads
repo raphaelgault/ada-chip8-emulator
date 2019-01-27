@@ -1,8 +1,7 @@
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
-
-with Ada.Text_IO;           use Ada.Text_IO;
 with Interfaces;            use Interfaces;
+
 with Types;             use Types;
 
 package Keyboard is
@@ -18,12 +17,16 @@ package Keyboard is
    pragma Pack(Keyboard_buffer);
    Line : constant Integer := 20;
 
-   procedure Reset_Keyboard(Keyboard: in out Keyboard_Buffer);
+   procedure Init_Keyboard(Keyboard: in out Keyboard_Buffer);
+
    procedure Render_Keyboard(Keyboard: in Keyboard_Buffer);
+
    procedure Reset_Pressed_Keys(Pressed: in out Keys);
+
    procedure Get_Pressed_Key(Keyboard: in out Keyboard_Buffer;
                              Pressed: in out Keys;
                              Regs: in out GeneralRegs;
                              Blocked: in out Integer;
                              X: in Position; Y: in Position);
+
 end Keyboard;

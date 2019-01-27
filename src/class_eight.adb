@@ -1,13 +1,18 @@
-with Ada.Text_IO; use Ada.Text_IO;
-with Types; use Types;
-with Registers; use Registers;
-
 package body Class_Eight is
+
+  --------
+  -- LD --
+  --------
+
   procedure LD (x : Integer; y : Integer; vm : in out Registers.Registers)
   is
   begin
     vm.GeneralRegisters(X) := vm.GeneralRegisters(Y);
   end LD;
+
+  --------------
+  -- OR_instr --
+  --------------
 
   procedure OR_instr (x : Integer; y : Integer; vm : in out Registers.Registers)
   is
@@ -15,17 +20,29 @@ package body Class_Eight is
     vm.GeneralRegisters(X) := vm.GeneralRegisters(X) or vm.GeneralRegisters(Y);
   end OR_instr;
 
+  ---------------
+  -- AND_instr --
+  ---------------
+
   procedure AND_instr (x : Integer; y : Integer; vm : in out Registers.Registers)
   is
   begin
     vm.GeneralRegisters(X) := vm.GeneralRegisters(X) and vm.GeneralRegisters(Y);
   end AND_instr;
 
+  ---------------
+  -- XOR_instr --
+  ---------------
+
   procedure XOR_instr (x : Integer; y : Integer; vm : in out Registers.Registers)
   is
   begin
     vm.GeneralRegisters(X) := vm.GeneralRegisters(X) xor vm.GeneralRegisters(Y);
   end XOR_instr;
+
+  ---------
+  -- ADD --
+  ---------
 
   procedure ADD (x : Integer; y : Integer; vm : in out Registers.Registers) is
     A : Types.Byte;
@@ -41,6 +58,10 @@ package body Class_Eight is
     end if;
   end ADD;
 
+  ---------
+  -- SUB --
+  ---------
+
   procedure SUB (x : Integer; y : Integer; vm : in out Registers.Registers) is
     A : Types.Byte;
     B : Types.Byte;
@@ -55,6 +76,10 @@ package body Class_Eight is
     end if;
   end SUB;
 
+  ---------
+  -- SHR --
+  ---------
+
   procedure SHR (x : Integer; y : Integer; vm : in out Registers.Registers) is
   begin
     if (vm.GeneralRegisters(X) and 16#01#) /= 0 then
@@ -64,6 +89,10 @@ package body Class_Eight is
     end if;
     vm.GeneralRegisters(X) := vm.GeneralRegisters(X) / 2;
   end SHR;
+
+  ----------
+  -- SUBN --
+  ----------
 
   procedure SUBN (x : Integer; y : Integer; vm : in out Registers.Registers) is
     A : Types.Byte;
@@ -79,6 +108,10 @@ package body Class_Eight is
     end if;
   end SUBN;
 
+  ---------
+  -- SHL --
+  ---------
+
   procedure SHL (x : Integer; y : Integer; vm : in out Registers.Registers) is
   begin
     if (vm.GeneralRegisters(X) and 16#80#) /= 0 then
@@ -88,4 +121,5 @@ package body Class_Eight is
     end if;
     vm.GeneralRegisters(X) := vm.GeneralRegisters(X) * 2;
   end SHL;
+
 end Class_Eight;

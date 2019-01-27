@@ -1,13 +1,9 @@
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-with Stack; use Stack;
-with Types; use Types;
-with Rom; use Rom;
-with Handlers; use Handlers;
-with Registers; use Registers;
-with Interfaces; use Interfaces;
-
 package body Interpreter is
+
+  ----------------
+  -- Interprete --
+  ----------------
+
   procedure Interprete
   is
      package Byte_IO is new Ada.Text_Io.Modular_IO (Types.Opcode);
@@ -49,4 +45,5 @@ package body Interpreter is
       end if;
     end loop;
   end Interprete;
+
 end Interpreter;

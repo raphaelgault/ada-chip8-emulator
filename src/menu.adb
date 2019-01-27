@@ -1,4 +1,9 @@
 package body Menu is
+
+   ----------
+   -- Draw --
+   ----------
+
    procedure Draw is
       Pt : Point := (0, 0);
       R : Rect;
@@ -23,6 +28,10 @@ package body Menu is
          Buffer.Draw_Horizontal_Line(Pt, Buffer.Width);
       end loop;
    end;
+
+   -----------------------
+   -- Compute_Rom_Index --
+   -----------------------
 
    function Compute_Rom_Index(X: Integer; Y : Integer) return Integer is
       Pt : Point := (0, 0);
@@ -53,6 +62,10 @@ package body Menu is
             return 23 - (Y / 60);
       end case;
    end;
+
+   -------------------
+   -- Get_Rom_Index --
+   -------------------
 
    function Get_Rom_Index return Integer is
       Rom_Index : Integer := -1;

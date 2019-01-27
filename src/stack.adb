@@ -1,4 +1,9 @@
 package body Stack is
+
+  ----------------
+  -- Stack_Init --
+  ----------------
+
   function Stack_Init return LifoStack
   is
     S : LifoStack;
@@ -6,6 +11,11 @@ package body Stack is
     S.Size := 0;
     return S;
   end Stack_Init;
+
+  ----------------
+  -- Stack_Push --
+  ----------------
+
   function Stack_Push (s : in out LifoStack; elt : Integer_16) return Boolean is
   begin
     if s.Size >= Stack_Max_Size then
@@ -15,6 +25,11 @@ package body Stack is
     s.IntData(s.Size) := elt;
     return True;
   end;
+
+  ---------------
+  -- Stack_Pop --
+  ---------------
+
   function Stack_Pop (s : in out LifoStack) return Integer_16 is
     elt : Integer_16;
   begin
@@ -25,10 +40,16 @@ package body Stack is
     s.Size := s.Size - 1;
     return elt;
   end;
+
+  ---------------
+  -- Stack_Top --
+  ---------------
+
   function Stack_Top (s : in LifoStack) return Integer_16 is
     elt : Integer_16;
   begin
     elt := s.IntData(s.Size);
     return elt;
   end;
+
 end Stack;

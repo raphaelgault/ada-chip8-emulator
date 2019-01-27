@@ -1,6 +1,9 @@
-with Types; use Types;
-
 package body Keyboard is
+
+   ---------------
+   -- Write_Key --
+   ---------------
+
    procedure Write_Key(Keyboard: in out Keyboard_buffer;
                        Code: in Integer; Pos: in Integer)
    is
@@ -18,7 +21,12 @@ package body Keyboard is
       end loop;
    end;
 
-   procedure Reset_Keyboard(Keyboard: in out Keyboard_buffer)
+
+   --------------------
+   -- Init_Keyboard --
+   --------------------
+
+   procedure Init_Keyboard(Keyboard: in out Keyboard_buffer)
    is
       type Keys_Arr is array (0 .. 15) of Integer;
       -- Code nbs, in order : 7, F, 6, E, 5, D, 4, C, 3, B, 2, A, 1, 9, 0, 8
@@ -35,6 +43,10 @@ package body Keyboard is
       end loop;
    end;
 
+   ---------------------
+   -- Render_Keyboard --
+   ---------------------
+
    procedure Render_Keyboard(Keyboard: in Keyboard_Buffer)
    is
       Cur_pos : Point;
@@ -49,11 +61,19 @@ package body Keyboard is
       end loop;
    end;
 
+   ------------------------
+   -- Reset_Pressed_Keys --
+   ------------------------
+
    procedure Reset_Pressed_Keys(Pressed: in out Keys)
    is
    begin
       Pressed := (others => False);
    end;
+
+   ----------------------------
+   -- Update_Keyboard_Buffer --
+   ----------------------------
 
    procedure Update_Keyboard_Buffer(Keyboard: in out Keyboard_Buffer;
                                     K : in Key)
@@ -86,6 +106,10 @@ package body Keyboard is
          end loop;
       end loop;
    end;
+
+   ---------------------
+   -- Get_Pressed_Key --
+   ---------------------
 
    procedure Get_Pressed_Key(Keyboard: in out Keyboard_Buffer;
                              Pressed: in out Keys;
