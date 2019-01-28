@@ -9,6 +9,7 @@ with Class_Eight; use Class_Eight;
 with Class_F; use Class_F;
 
 package Handlers is
+   pragma Spark_Mode;
 
   function rshift(val : opcode; num : Integer) return Opcode;
 
@@ -31,8 +32,7 @@ package Handlers is
   procedure Handler_5 (i : in Opcode; vm : in out Registers.Registers)
     with Post => vm.pc >= 512 and then vm.pc <= 16#FFF#;
 
-  procedure Handler_6 (i : in Opcode; vm : in out Registers.Registers)
-    with Post => vm.GeneralRegisters(Integer(rshift(i and 16#0F00#, 8))) = Byte(i and 16#00FF#);
+  procedure Handler_6 (i : in Opcode; vm : in out Registers.Registers);
 
   procedure Handler_7 (i : in Opcode; vm : in out Registers.Registers);
 

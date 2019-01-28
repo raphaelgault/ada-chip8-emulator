@@ -2,11 +2,11 @@ with "boards/stm32f429_discovery/stm32f429_discovery_full.gpr";
 
 project Prj extends "examples/shared/common/common.gpr" is
 
-   type Mode_Type is ("debug", "release");  --  all possible values
-   Mode : Mode_Type := External ("mode", "debug"); -- a typed variable
+   type Mode_Type is ("release", "debug");  --  all possible values
+   Mode : Mode_Type := External ("mode", "release"); -- a typed variable
 
    for Runtime ("Ada") use STM32F429_Discovery_Full'Runtime("Ada");
-   for Object_Dir use "obj" & External ("mode", "debug");
+   for Object_Dir use "obj" & External ("mode", "release");
    for Create_Missing_Dirs use "True";
 
    for Main use ("main.adb");
@@ -14,12 +14,12 @@ project Prj extends "examples/shared/common/common.gpr" is
 
    package Compiler is
       case Mode is
-         when "debug" =>
-            for Switches ("Ada")
-              use ("-g");
          when "release" =>
             for Switches ("Ada")
               use ("-O2");
+         when "debug" =>
+            for Switches ("Ada")
+              use ("-g");
       end case;
    end Compiler;
 

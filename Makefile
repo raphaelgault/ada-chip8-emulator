@@ -16,6 +16,9 @@ debug:
 	gprbuild -P $(ENTRY_POINT) -Xmode=debug
 	$(OBJCOPY) -O binary $(DEBUGDIR)/$(ELF) $(BIN)
 
+prove:
+	gnatprove -P $(ENTRY_POINT) -u src/handlers.ads
+
 generate-roms:
 	./tests/generate-roms.sh
 
@@ -30,3 +33,4 @@ clean:
 	gprclean -Xmode=debug
 	$(RM) src/rom.ads
 	$(RM) $(BIN)
+	$(RM) -rf $(DEBUGDIR) $(RELEASEDIR)
