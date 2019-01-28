@@ -24,4 +24,5 @@ package Graphics is
 
    procedure Clear_Screen(Screen : in out Pixel_Buffer);
 
+   procedure Draw_Pixel(Screen: in out Pixel_Buffer; I : Natural; Color : Boolean);
 end Graphics;

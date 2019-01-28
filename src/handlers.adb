@@ -1,3 +1,6 @@
+with Stm32.Board; use Stm32.Board;
+with Graphics; use Graphics;
+
 package body Handlers is
 
   ------------
@@ -40,8 +43,9 @@ package body Handlers is
     K := Byte(i and 16#FF#);
     if K = 16#E0# then
       -- Clear the display
-      VM.Screen := (others => false);
-      Vm.Refresh_Screen := True;
+       VM.Screen := (others => false);
+       Reset_Layer(2);
+      --  Vm.Refresh_Screen := True;
     elsif K = 16#EE# then
       -- Return from subroutine
       vm.PC := Stack_Pop(vm.Stack);
@@ -262,13 +266,14 @@ package body Handlers is
         if Pixel /= 0 then
           Screen_Pos := ((X + Xpos) mod 64) + ((Y + Line) mod 32) * 64;
           Vm.Screen(Screen_Pos) := Vm.Screen(Screen_Pos) xor True;
+          Draw_Pixel(VM.Screen, Screen_Pos, VM.Screen(Screen_Pos));
           if Vm.Screen(Screen_Pos) = False then
             Vm.GeneralRegisters(15) := 1;
           end if;
         end if;
       end loop;
     end loop;
-
+    Display.Update_Layer (2, Copy_Back => True);
     Vm.Refresh_Screen := True;
   end Handler_D;
 

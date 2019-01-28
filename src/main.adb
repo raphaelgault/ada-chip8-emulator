@@ -78,8 +78,8 @@ begin
 
    Rom_Number := Menu.Get_Rom_Index;
 
-   Display.Set_Orientation(Portrait);
-   Touch_Panel.Set_Orientation(Portrait);
+   --  Display.Set_Orientation(Portrait);
+   --  Touch_Panel.Set_Orientation(Portrait);
 
    Graphics.Reset_Layer(1);
    Graphics.Reset_Layer(2);
@@ -95,9 +95,9 @@ begin
    VM.PC := 512;
 
    loop
-      if User_Button.Has_Been_Pressed then
-         null;
-      end if;
+      --  if User_Button.Has_Been_Pressed then
+      --     null;
+      --  end if;
 
       if VM.Blocked = -1 then
          N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
@@ -116,11 +116,11 @@ begin
          end if;
       end if;
 
-      if Vm.Refresh_Screen = True then
-         Graphics.Reset_Layer(2);
-         Graphics.Render_Screen(VM.Screen);
-         Display.Update_Layer (2, Copy_Back => False);
-      end if;
+      --  if Vm.Refresh_Screen = True then
+      --     Graphics.Reset_Layer(2);
+      --     Graphics.Render_Screen(VM.Screen);
+      --     Display.Update_Layer (2, Copy_Back => False);
+      --  end if;
 
       declare
          State : constant TP_State := Touch_Panel.Get_All_Touch_Points;
@@ -141,7 +141,7 @@ begin
                for Id in State'Range loop
                   Current_X := State (Id).X;
                   Current_Y := State (Id).Y;
-                  if Current_X >= Keyboard_Start then
+                  if Current_Y >= Keyboard_Start then
                      Graphics.Reset_Layer(1);
                      Graphics.Draw_Borders;
                      Render_Keyboard(Keyboard);
