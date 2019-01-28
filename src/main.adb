@@ -78,9 +78,6 @@ begin
 
    Rom_Number := Menu.Get_Rom_Index;
 
-   --  Display.Set_Orientation(Portrait);
-   --  Touch_Panel.Set_Orientation(Portrait);
-
    Graphics.Reset_Layer(1);
    Graphics.Reset_Layer(2);
 
@@ -116,12 +113,6 @@ begin
          end if;
       end if;
 
-      --  if Vm.Refresh_Screen = True then
-      --     Graphics.Reset_Layer(2);
-      --     Graphics.Render_Screen(VM.Screen);
-      --     Display.Update_Layer (2, Copy_Back => False);
-      --  end if;
-
       declare
          State : constant TP_State := Touch_Panel.Get_All_Touch_Points;
          Current_X : Integer := 0;
@@ -138,20 +129,17 @@ begin
                   Keyboard_Changed := False;
                end if;
             when others =>
-               for Id in State'Range loop
-                  Current_X := State (Id).X;
-                  Current_Y := State (Id).Y;
-                  if Current_Y >= Keyboard_Start then
-                     Graphics.Reset_Layer(1);
-                     Graphics.Draw_Borders;
-                     Render_Keyboard(Keyboard);
-                     Get_Pressed_Key(Keyboard, VM.Pressed_Keys,
-                                     VM.GeneralRegisters, VM.Blocked,
-                                     Current_X, Current_Y);
-                     Display.Update_Layer (1, Copy_Back => False);
-                     exit;
-                  end if;
-               end loop;
+               Current_X := State (State'First).X;
+               Current_Y := State (State'First).Y;
+               if Current_Y >= Keyboard_Start then
+                  Graphics.Reset_Layer(1);
+                  Graphics.Draw_Borders;
+                  Render_Keyboard(Keyboard);
+                  Get_Pressed_Key(Keyboard, VM.Pressed_Keys,
+                                  VM.GeneralRegisters, VM.Blocked,
+                                  Current_X, Current_Y);
+                  Display.Update_Layer (1, Copy_Back => False);
+               end if;
                Keyboard_Changed := True;
          end case;
       end;

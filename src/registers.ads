@@ -10,9 +10,7 @@ package Registers is
       DT : Byte; -- Delay Timer
       ST : Byte; -- Sound Timer
       PC : Integer_16;
-      SP : Byte;
       Blocked : Integer := -1;
-      Refresh_Screen : Boolean := False;
       stack : LifoStack := Stack_Init;
       Screen : Pixel_Buffer := (others => False);
       Pressed_keys : Keys := (others => False);

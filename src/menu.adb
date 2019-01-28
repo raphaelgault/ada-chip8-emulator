@@ -50,7 +50,6 @@ package body Menu is
    -----------------------
 
    function Compute_Rom_Index(X: Integer; Y : Integer) return Integer is
-      Pt : Point;
       R : Rect;
 
       Width : Integer := Display.Hidden_Buffer (1).Width / 4;

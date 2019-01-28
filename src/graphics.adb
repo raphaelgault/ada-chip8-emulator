@@ -99,6 +99,10 @@ package body Graphics is
       end loop;
    end;
 
+   ----------------
+   -- Draw_Pixel --
+   ----------------
+
    procedure Draw_Pixel(Screen: in out Pixel_Buffer; I : Natural; Color : Boolean)
    is
       Cur_Pos : Point := (0, 0);
@@ -106,7 +110,7 @@ package body Graphics is
       Pixel_Color : Bitmap_Color := Hal.Bitmap.White;
    begin
       if Color = False then
-         Pixel_Color := Hal.Bitmap.Black;
+         Pixel_Color := Hal.Bitmap.Transparent;
       end if;
       Display.Hidden_Buffer(2).Set_Source(Pixel_Color);
       Cur_Pos := ((I mod 64) * Pixel_Size, (I / 64) * Pixel_Size);

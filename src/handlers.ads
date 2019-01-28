@@ -50,9 +50,7 @@ package Handlers is
 
   procedure Handler_C (i : in Opcode; vm : in out Registers.Registers);
 
-  procedure Handler_D (i : in Opcode; vm : in out Registers.Registers)
-    with Pre => VM. Refresh_Screen = False,
-    Post => VM.Refresh_Screen = True;
+  procedure Handler_D (i : in Opcode; vm : in out Registers.Registers);
 
   procedure Handler_E (i : in Opcode; vm : in out Registers.Registers)
     with Pre => (I and 16#FF#) in 16#9E# | 16#A1#,
