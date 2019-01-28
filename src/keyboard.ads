@@ -15,7 +15,7 @@ package Keyboard is
    -- scale of the keyboard is 4 pixels, size = 80 * 320
    type Keyboard_Buffer is array (0 .. 1599) of Boolean;
    pragma Pack(Keyboard_buffer);
-   Line : constant Integer := 20;
+   Line_Size : constant Integer := 80;
 
    procedure Init_Keyboard(Keyboard: in out Keyboard_Buffer);
 
