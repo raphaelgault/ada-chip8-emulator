@@ -12,8 +12,10 @@ package body Graphics is
       Display.Initialize_Layer (1, ARGB_8888);
       Display.Initialize_Layer (2, ARGB_8888);
 
+      Display.Set_Orientation(Landscape);
+
       --  Initialize touch panel
-      Touch_Panel.Initialize;
+      Touch_Panel.Initialize(Landscape);
 
       --  Initialize button
       User_Button.Initialize;

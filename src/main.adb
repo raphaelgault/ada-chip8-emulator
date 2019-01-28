@@ -47,6 +47,7 @@ with Types; use Types;
 with STM32.Board;           use STM32.Board;
 with HAL.Bitmap;            use HAL.Bitmap;
 with Hal.Framebuffer;       use Hal.Framebuffer;
+with HAL.Touch_Panel;       use HAL.Touch_Panel;
 
 pragma Warnings (Off, "referenced");
 with HAL.Touch_Panel;       use HAL.Touch_Panel;
@@ -76,6 +77,9 @@ begin
    Display.Update_Layer (2, Copy_Back => False);
 
    Rom_Number := Menu.Get_Rom_Index;
+
+   Display.Set_Orientation(Portrait);
+   Touch_Panel.Set_Orientation(Portrait);
 
    Graphics.Reset_Layer(1);
    Graphics.Reset_Layer(2);

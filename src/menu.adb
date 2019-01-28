@@ -11,6 +11,15 @@ package body Menu is
 
       Case_Width : Integer := Buffer.Width / 4;
       Case_Height : Integer := Buffer.Height / 6;
+
+
+      type Names is array (Integer range 0 .. 23) of access constant String;
+      Rom_Names : Names := (Rom1'Access, Rom2'Access, Rom3'Access, Rom4'Access,
+                            Rom5'Access, Rom6'Access, Rom7'Access, Rom8'Access,
+                            Rom9'Access, Rom10'Access, Rom11'Access, Rom12'Access,
+                            Rom13'Access, Rom14'Access, Rom15'Access, Rom16'Access,
+                            Rom17'Access, Rom18'Access, Rom19'Access, Rom20'Access,
+                            Rom21'Access, Rom22'Access, Rom23'Access, Rom24'Access);
    begin
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
 
@@ -27,6 +36,13 @@ package body Menu is
          Pt := (0, Case_Height * I);
          Buffer.Draw_Horizontal_Line(Pt, Buffer.Width);
       end loop;
+
+      for I in Rom_Names'Range loop
+         LCD_Std_Out.Put(10 + (I mod 4) * Case_Width,
+                         15 + (I / 4) * Case_Height,
+                         Rom_Names(I).all);
+      end loop;
+
    end;
 
    -----------------------
@@ -34,32 +50,32 @@ package body Menu is
    -----------------------
 
    function Compute_Rom_Index(X: Integer; Y : Integer) return Integer is
-      Pt : Point := (0, 0);
-      R : Rect := (Pt, 60, 60);
+      Pt : Point;
+      R : Rect;
 
       Width : Integer := Display.Hidden_Buffer (1).Width / 4;
       Height : Integer := Display.Hidden_Buffer (1).Height / 6;
 
-      Round_Y : Integer := (Y / Height) * height;
+      Round_Y : Integer := (Y / Height) * Height;
    begin
       Display.Hidden_Buffer (1).Set_Source (HAL.Bitmap.White);
       case X is
-         when 0 .. 60 =>
+         when 0 .. 80 =>
             R := ((0, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
-            return 5 - (Y / 60);
-         when 61 .. 120 =>
-            R := ((60, Round_Y), Width, Height);
+            return 4 * (Y / Height);
+         when 81 .. 160 =>
+            R := ((80, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
-            return 11 - (Y / 60);
-         when 121 .. 180 =>
-            R := ((120, Round_Y), Width, Height);
+            return 1 + 4 * (Y / Height);
+         when 161 .. 240 =>
+            R := ((160, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
-            return 17 - (Y / 60);
+            return 2 + 4 * (Y / Height);
          when others =>
-            R := ((180, Round_Y), Width, Height);
+            R := ((240, Round_Y), Width, Height);
             Display.Hidden_Buffer (1).Fill_Rect(R);
-            return 23 - (Y / 60);
+            return 3 + 4 * (Y / Height);
       end case;
    end;
 
