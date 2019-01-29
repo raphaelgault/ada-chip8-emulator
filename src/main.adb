@@ -35,6 +35,7 @@ with Last_Chance_Handler;  pragma Unreferenced (Last_Chance_Handler);
 --  must be somewhere in the closure of the context clauses.
 
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces; use Interfaces;
 
 with Handlers; use Handlers;
 with Graphics;
@@ -99,7 +100,7 @@ begin
       if VM.Blocked = -1 then
          N := Opcode(lshift(Opcode(mem(VM.PC)), 8));
          N := N + Opcode(mem(VM.PC + 1));
-         I := rshift(N, 12);
+         I := Opcode(Shift_Right(Unsigned_64(N), 12));
          Handlers.Handler_Table(Integer(I)).all(N, VM);
          VM.PC := VM.PC + 2;
       end if;

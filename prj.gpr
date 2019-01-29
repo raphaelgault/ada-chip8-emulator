@@ -2,7 +2,7 @@ with "boards/stm32f429_discovery/stm32f429_discovery_full.gpr";
 
 project Prj extends "examples/shared/common/common.gpr" is
 
-   type Mode_Type is ("release", "debug");  --  all possible values
+   type Mode_Type is ("release", "analyze", "debug");  --  all possible values
    Mode : Mode_Type := External ("mode", "release"); -- a typed variable
 
    for Runtime ("Ada") use STM32F429_Discovery_Full'Runtime("Ada");
@@ -17,11 +17,22 @@ project Prj extends "examples/shared/common/common.gpr" is
          when "release" =>
             for Switches ("Ada")
               use ("-O2");
+         when "analyze" =>
+            for Switches ("Ada")
+              use ("-gnatet=target.atp");
          when "debug" =>
             for Switches ("Ada")
               use ("-g");
       end case;
    end Compiler;
+
+   package Builder is
+      case Mode is
+         when "analyze" =>
+            for Global_Compilation_Switches ("Ada")
+              use ("-gnateT=target.atp");
+      end case;
+   end Builder;
 
    package Linker is
       for Default_Switches ("ada") use

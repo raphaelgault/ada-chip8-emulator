@@ -1,7 +1,7 @@
 with STM32.Board; use STM32.Board;
 with Graphics;
 
-package body Handlers is
+package body Handlers Is
 
   ------------
   -- rshift --
@@ -36,23 +36,25 @@ package body Handlers is
   ---------------
 
   procedure Handler_0 (i : in Opcode; vm : in out Registers.Registers)
+    with Spark_Mode => On
   is
     A : Addr;
     K : Byte;
   begin
     K := Byte(i and 16#FF#);
-    if K = 16#E0# then
+    case K is
+       when 16#E0# =>
       -- Clear the display
        VM.Screen := (others => false);
        Graphics.Reset_Layer(2);
-    elsif K = 16#EE# then
+    when 16#EE# =>
       -- Return from subroutine
       vm.PC := Stack_Pop(vm.Stack);
-    else
+    when others =>
       -- Jump to addr - Ignored by interpreter?
       A := Addr(i and 16#0FFF#);
       null;
-    end if;
+    end case;
   end Handler_0;
 
   ---------------

@@ -17,7 +17,8 @@ debug:
 	$(OBJCOPY) -O binary $(DEBUGDIR)/$(ELF) $(BIN)
 
 prove:
-	gnatprove -P $(ENTRY_POINT) -u src/handlers.ads
+	gprbuild -P $(ENTRY_POINT) -Xmode=analyze
+	gnatprove -P $(ENTRY_POINT) -Xmode=analyze -u src/handlers.ads
 
 generate-roms:
 	./tests/generate-roms.sh
