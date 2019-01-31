@@ -10,8 +10,8 @@ A simple chip-8 emulator for STM32F429-Discovery
 * This [Ada Drivers Library](https://github.com/AdaCore/Ada_Drivers_Library) (to clone)
 * Export these two paths (in your `.bashrc` or a script that will be sourced each time there is a need to compile) :
 ```bash
-    export PATH=/path/to/GNAT/toolchain/install/path/bin:$PATH
-    export GPR_PROJECT_PATH=/path/to/Ada_Drivers_Library
+export PATH=/path/to/GNAT/toolchain/install/path/bin:$PATH
+export GPR_PROJECT_PATH=/path/to/Ada_Drivers_Library
 ```
 
 ## Compilation
@@ -23,6 +23,11 @@ make release  # also release mode
 make debug    # debug mode
 ```
 
+*Note*: if the command `make` is not used, the following script should be run to generate all the ROMs.
+```bash
+./tests/generate-roms
+```
+
 ## Debug
 
 ``` bash
@@ -32,38 +37,42 @@ make gdb  # start gdb and connect to the gdb-server
 
 Click [here](https://rawgit.com/alexanderdickson/Chip-8-Emulator/master/index.html) to compare with the original ROM behaviour.
 
-## Working ROMs
+## Flash
+
+``` bash
+make flash
+```
+
+## ROMs list
 
 * 15PUZZLE
-* _CONNECT4_
-* _GUESS_
-* _HIDDEN_
+* BLITZ
+* BLINK
+* BRIX
+* CONNECT4
+* GUESS
+* HIDDEN
 * IBM
 * INVADERS
-* _KALEID_
+* KALEID
 * MAZE
-* _MERLIN_
-* _MISSILE_
-* _PONG_
-* _PONG2_
-* _PUZZLE_
-* _SYGYZY_
-* _TICTAC_
-* _UFO_
-* _VBRIX_
-* _WIPEOFF_
+* MERLIN
+* MISSILE
+* PONG
+* PONG2
+* PUZZLE
+* SYGYZY
+* TANK
+* TETRIS
+* TICTAC
+* UFO
+* VBRIX
+* VERS
+* WIPEOFF
 
-All ROMs in italic need an additional check with the keyboard.
+## AUTHORS
 
-## Not working ROMs
-
-* BLITZ : Good display but keyboard not working : Maybe the wait for keyboard function?
-* BLINKY : No display
-* BRIX : Good beginning of display but weird game playing
-* TANK : En fait je comprends pas ce que ça doit faire, ça fait des trucs différents
-* TETRIS : Bonne grosse exception au runtime
-* VERS : Bonne grosse exception au runtime
-
-## Notes
-
-Maybe we should increase the timer decrementation to make it faster.
+Raphaël Gault - <gault_r@epita.fr>
+Tifanny Suyavong - <suyavo_t@epita.fr>
+Guillaume Taquet Gaspérini - <taquet_g@epita.fr>
+Grégoire Verdier - <verdie_g@epita.fr>

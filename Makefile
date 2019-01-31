@@ -5,18 +5,19 @@ GDB=$(PREFIX)-gdb
 ENTRY_POINT=prj.gpr
 DEBUGDIR=objdebug
 RELEASEDIR=objrelease
+ANALYZEDIR=objanalyze
 ELF=main
 BIN=$(ELF).bin
 
-release:
+release: generate-roms
 	gprbuild -P $(ENTRY_POINT) -Xmode=release
 	$(OBJCOPY) -O binary $(RELEASEDIR)/$(ELF) $(BIN)
 
-debug:
+debug: generate-roms
 	gprbuild -P $(ENTRY_POINT) -Xmode=debug
 	$(OBJCOPY) -O binary $(DEBUGDIR)/$(ELF) $(BIN)
 
-prove:
+prove: generate-roms
 	gprbuild -P $(ENTRY_POINT) -Xmode=analyze
 	gnatprove -P $(ENTRY_POINT) -Xmode=analyze -u src/handlers.ads
 
@@ -34,4 +35,4 @@ clean:
 	gprclean -Xmode=debug
 	$(RM) src/rom.ads
 	$(RM) $(BIN)
-	$(RM) -rf $(DEBUGDIR) $(RELEASEDIR)
+	$(RM) -rf $(DEBUGDIR) $(RELEASEDIR) $(ANALYZEDIR)
