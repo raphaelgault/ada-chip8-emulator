@@ -31,6 +31,8 @@ project Prj extends "examples/shared/common/common.gpr" is
          when "analyze" =>
             for Global_Compilation_Switches ("Ada")
               use ("-gnateT=target.atp");
+         when others =>
+              null;
       end case;
    end Builder;
 
