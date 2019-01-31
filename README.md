@@ -1,6 +1,6 @@
 # ada-chip8-emulator
 
-A simple chip-8 emulator for STM32F429-Discovery
+A simple chip-8 emulator for STM32F429-Discovery based on this [specification](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#0.0)
 
 ## Requirements
 
@@ -72,7 +72,7 @@ make flash
 
 ## AUTHORS
 
-Raphaël Gault - <gault_r@epita.fr>
-Tifanny Suyavong - <suyavo_t@epita.fr>
-Guillaume Taquet Gaspérini - <taquet_g@epita.fr>
-Grégoire Verdier - <verdie_g@epita.fr>
+* Raphaël Gault - <gault_r@epita.fr>
+* Tifanny Suyavong - <suyavo_t@epita.fr>
+* Guillaume Taquet Gaspérini - <taquet_g@epita.fr>
+* Grégoire Verdier - <verdie_g@epita.fr>
